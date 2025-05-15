@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <i class="fas fa-robot text-white text-xs"></i>
         </div>
         <div class="ml-3 bg-gray-700 p-3 rounded-lg rounded-tl-none max-w-md">
-          <p>${message.replace(/\n/g, '<br>')}</p>
+          <p>${message.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>')}</p>
         </div>
       `;
       chatMessages.appendChild(botMessageDiv);
@@ -245,37 +245,41 @@ document.addEventListener('DOMContentLoaded', function() {
       typingIndicator.classList.add('hidden');
     }
   
+    // Function to send message to backend
+    async function sendMessageToBackend(userMessage) {
+      try {
+        const messages = [
+          { role: "user", content: userMessage }
+        ];
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ messages })
+        });
+        const data = await response.json();
+        return data.response;
+      } catch (error) {
+        return "Sorry, I couldn't connect to the server.";
+      }
+    }
+  
     // Handle form submission
-    chatForm.addEventListener('submit', function(e) {
+    chatForm.addEventListener('submit', async function(e) {
       e.preventDefault();
       const message = messageInput.value.trim();
-      
       if (message === '') return;
-      
       // Add user message to chat
       addUserMessage(message);
       messageInput.value = '';
-      
       // Show typing indicator
       showTypingIndicator();
-      
-      // Simulate bot processing time
-      setTimeout(function() {
-        hideTypingIndicator();
-        
-        // Get and add bot response
-        const response = getResponse(message);
-        addBotMessage(response);
-        
-        // Add suggested follow-up questions based on the context
-        if (message.toLowerCase().includes('saree')) {
-          addSuggestedQuestions(['How to drape a saree?', 'What saree to wear for a wedding?', 'Regional saree varieties']);
-        } else if (message.toLowerCase().includes('festival')) {
-          addSuggestedQuestions(['What to wear for Diwali?', 'Holi celebration attire', 'Navratri special outfits']);
-        } else if (response.includes('specific traditional outfit')) {
-          addSuggestedQuestions(['Tell me about lehengas', 'What is a dhoti?', 'Traditional Kerala outfits']);
-        }
-      }, 1000 + Math.random() * 1000); // Random delay between 1-2 seconds
+      // Get bot response from backend
+      const botResponse = await sendMessageToBackend(message);
+      hideTypingIndicator();
+      addBotMessage(botResponse);
+      // Optionally, add suggested follow-up questions here if needed
     });
   
     // Handle suggested questions
