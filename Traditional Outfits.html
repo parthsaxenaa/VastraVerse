@@ -1,503 +1,2425 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Traditional Outfits - VastraVerse</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <link href="styles.css" rel="stylesheet">
-  <!-- LottieFiles CDN for animations -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.2/lottie.min.js"></script>
-  <style>
-    .bg-gray-850 {
-      background-color: #1a1c23;
-    }
-    
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    
-    ::-webkit-scrollbar-track {
-      background: #2d3748;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-      background: #ec4899;
-      border-radius: 4px;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-      background: #d53f8c;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Traditional Outfits - VastraVerse</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .bg-gray-850 {
+        background-color: #1a1c23;
+      }
 
-    /* Outfit card hover animation */
-    .outfit-item {
-      transition: transform 0.3s ease;
-    }
-    
-    .outfit-item:hover {
-      transform: translateY(-5px);
-    }
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
 
-    /* Modal animation */
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    
-    #outfitModal {
-      animation: fadeIn 0.3s ease-out;
-    }
+      ::-webkit-scrollbar-track {
+        background: #2d3748;
+      }
 
-    /* Outfit image zoom effect */
-    .outfit-image {
-      transition: transform 0.5s ease;
-    }
-    
-    .outfit-image:hover {
-      transform: scale(1.05);
-    }
+      ::-webkit-scrollbar-thumb {
+        background: #ec4899;
+        border-radius: 4px;
+      }
 
-    /* Shimmer base style for skeleton loaders */
-    .shimmer {
-      position: relative;
-      overflow: hidden;
-      background: #23272f;
-    }
-    .shimmer::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -150px; width: 150px; height: 100%;
-      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
-      animation: shimmer 1.5s infinite;
-    }
-    @keyframes shimmer {
-      100% { left: 100%; }
-    }
-  </style>
-</head>
-<body class="bg-gray-900 text-white font-sans antialiased">
-  <!-- Navbar -->
-  <nav id="navbar" class="fixed w-full z-10 transition-all duration-300 ease-in-out py-4 bg-gray-900 bg-opacity-90 backdrop-filter backdrop-blur-lg">
-    <div class="container mx-auto px-4 flex justify-between items-center">
-      <div class="flex items-center space-x-2">
-        <div class="text-pink-500 text-2xl"><i class="fas fa-tshirt"></i></div>
-        <a href="index.html" class="text-xl font-bold">Vastra<span class="text-pink-500">Verse</span></a>
-      </div>
-      
-      <div class="hidden md:flex items-center space-x-8">
-        <a href="index.html" class="hover:text-pink-500 transition-colors">Home</a>
-        <a href="about.html" class="hover:text-pink-500 transition-colors">About</a>
-        <a href="chatbot.html" class="hover:text-pink-500 transition-colors">Chatbot</a>
-        <button id="themeToggle" class="hover:text-pink-500 transition-colors">
-          <i class="fas fa-sun"></i>
-        </button>
-      </div>
-      
-      <div class="auth-buttons flex items-center space-x-4">
-        <a href="login.html" class="px-4 py-2 rounded-full border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white transition-colors">Login</a>
-        <a href="signup.html" class="px-4 py-2 rounded-full bg-pink-500 text-white hover:bg-pink-600 transition-colors hidden md:block">Sign Up</a>
-      </div>
-      <div class="user-menu hidden items-center space-x-4">
-        <span class="text-gray-400">Hello, <span class="user-name">User</span></span>
-        <button id="logoutButton" class="px-4 py-2 rounded-full border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white transition-colors">Logout</button>
-      </div>
-      <button id="mobileMenuBtn" class="md:hidden text-gray-200 hover:text-pink-500">
-        <i class="fas fa-bars text-xl"></i>
-      </button>
-    </div>
-    
-    <!-- Mobile Menu -->
-    <div id="mobileMenu" class="md:hidden bg-gray-800 hidden">
-      <div class="container mx-auto px-4 py-4 flex flex-col space-y-3">
-        <a href="index.html" class="block py-2 hover:text-pink-500 transition-colors">Home</a>
-        <a href="about.html" class="block py-2 hover:text-pink-500 transition-colors">About</a>
-        <a href="Indian Festivals.html" class="block py-2 hover:text-pink-500 transition-colors">Festivals</a>
-        <a href="chatbot.html" class="block py-2 hover:text-pink-500 transition-colors">Chatbot</a>
-        <button class="px-4 py-2 rounded-full bg-pink-500 text-white hover:bg-pink-600 transition-colors w-full mt-2">Sign Up</button>
-      </div>
-    </div>
-  </nav>
+      ::-webkit-scrollbar-thumb:hover {
+        background: #d53f8c;
+      }
 
-  <!-- Hero Section -->
-  <section class="pt-24 pb-6 bg-gradient-to-r from-pink-500 to-purple-600 text-white">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-8">
-        <h1 class="text-4xl md:text-5xl font-bold mb-6">Traditional <span class="text-yellow-300">Outfits</span></h1>
-        <p class="text-xl max-w-3xl mx-auto">
-          Explore the vibrant tapestry of India's diverse traditional clothing from every region
-        </p>
-      </div>
-    </div>
-  </section>
+      /* Outfit card hover animation */
+      .outfit-item {
+        transition: transform 0.3s ease;
+      }
 
-  <!-- Search and Filter Section -->
-  <section class="py-6 bg-gray-800">
-    <div class="container mx-auto px-4">
-      <div class="flex flex-col md:flex-row gap-4">
-        <div class="flex-1">
-          <input type="text" id="outfitSearch" placeholder="Search for outfits..." class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500">
-        </div>
-        <select id="regionFilter" class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500">
-          <option value="all">All Regions</option>
-          <option value="north">North India</option>
-          <option value="south">South India</option>
-          <option value="east">East India</option>
-          <option value="west">West India</option>
-          <option value="northeast">Northeast India</option>
-        </select>
-        <select id="genderFilter" class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500">
-          <option value="all">All Categories</option>
-          <option value="womens">Women's Wear</option>
-          <option value="mens">Men's Wear</option>
-          <option value="unisex">Unisex</option>
-        </select>
-      </div>
-    </div>
-  </section>
+      .outfit-item:hover {
+        transform: translateY(-5px);
+      }
 
-  <!-- All Outfits Section -->
-  <section class="py-12 bg-gray-850">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold mb-8 text-center">Complete Outfit <span class="text-pink-500">Guide</span></h2>
-      
-      <div id="outfitsContainer" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <!-- Saree -->
-        <div class="bg-gray-800 p-4 rounded-lg border border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="saree" data-region="pan-india" data-gender="womens">
-          <div class="overflow-hidden rounded-lg mb-3">
-            <img src="/api/placeholder/400/320" alt="Saree" class="w-full h-32 object-cover object-center outfit-image">
+      /* Modal animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      #outfitModal {
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      /* Outfit image zoom effect */
+      .outfit-image {
+        transition: transform 0.5s ease;
+      }
+
+      .outfit-image:hover {
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-900 text-white font-sans antialiased">
+    <!-- Navbar -->
+    <nav
+      id="navbar"
+      class="fixed w-full z-10 transition-all duration-300 ease-in-out py-4 bg-gray-900 bg-opacity-90 backdrop-filter backdrop-blur-lg"
+    >
+      <div class="container mx-auto px-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <div class="text-pink-500 text-2xl">
+            <i class="fas fa-tshirt"></i>
           </div>
-          <h3 class="font-semibold mb-2 text-white">Saree</h3>
-          <div class="flex justify-between text-sm text-gray-400 mb-2">
-            <span>Pan-India</span>
-            <span>Women's Wear</span>
-          </div>
-          <p class="text-xs text-gray-400 mb-3">
-            A graceful drape of 5-9 meters fabric, the saree is India's iconic traditional garment with endless regional variations.
-          </p>
-          <button 
-            onclick="document.getElementById('saree-details').classList.remove('hidden')" 
-            class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+          <a href="index.html" class="text-xl font-bold"
+            >Vastra<span class="text-pink-500">Verse</span></a
           >
-            View Details
+        </div>
+
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="index.html" class="hover:text-pink-500 transition-colors"
+            >Home</a
+          >
+          <a href="about.html" class="hover:text-pink-500 transition-colors"
+            >About</a
+          >
+          <a href="chatbot.html" class="hover:text-pink-500 transition-colors"
+            >Chatbot</a
+          >
+          <button
+            id="themeToggle"
+            class="hover:text-pink-500 transition-colors"
+          >
+            <i class="fas fa-sun"></i>
           </button>
         </div>
 
-        <!-- Inline Modal for Saree -->
-        <div id="saree-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-          <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
-            <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
-            <h2 class="text-2xl font-bold mb-4 text-pink-400">✨ Saree - The Timeless Drape ✨</h2>
-            <p class="text-sm text-gray-300 leading-relaxed mb-2">
-              <strong>Origin and History:</strong><br>
-              Dating back over 5,000 years, the saree is one of the oldest garments still worn today. References to saree-like drapes appear in ancient texts and sculptures across the Indian subcontinent.
-            </p>
-            <p class="text-sm text-gray-300 leading-relaxed mb-2">
-              <strong>Regional Variations:</strong><br>
-              • Banarasi (Uttar Pradesh): Opulent silk with gold and silver brocade<br>
-              • Kanjivaram (Tamil Nadu): Heavy silk with contrasting borders<br>
-              • Paithani (Maharashtra): Vibrant silks with peacock motifs<br>
-              • Chanderi (Madhya Pradesh): Lightweight with gold borders<br>
-              • Sambalpuri (Odisha): Ikat patterns with traditional motifs
-            </p>
-            <p class="text-sm text-gray-300 leading-relaxed">
-              <strong>Cultural Significance:</strong><br>
-              The saree transcends being just a garment and represents cultural identity, family heritage, and artistic tradition. Different draping styles, weaves, and motifs tell stories of regional identity and social status. The saree continues to evolve with contemporary designs while maintaining its cultural roots.
-            </p>
-          </div>
-        </div>
-
-        <!-- Kurta Pajama -->
-        <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="kurta-pajama" data-region="north" data-gender="mens">
-          <div class="overflow-hidden rounded-lg mb-3">
-            <img src="/api/placeholder/400/320" alt="Kurta Pajama" class="w-full h-32 object-cover object-center outfit-image">
-          </div>
-          <h3 class="font-semibold mb-2 text-white">Kurta Pajama</h3>
-          <div class="flex justify-between text-sm text-gray-400 mb-2">
-            <span>North India</span>
-            <span>Men's Wear</span>
-          </div>
-          <p class="text-xs text-gray-400 mb-3">
-            Classic combination of a long tunic (kurta) with loose-fitting trousers (pajama), a comfortable and elegant attire.
-          </p>
-          <button 
-            onclick="document.getElementById('kurta-pajama-details').classList.remove('hidden')" 
-            class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+        <div class="flex items-center space-x-4">
+          <button
+            class="px-4 py-2 rounded-full border border-pink-500 text-pink-500 hover:bg-pink-500 hover:text-white transition-colors"
           >
-            View Details
+            Login
           </button>
-        </div>
-
-        <!-- Inline Modal for Kurta Pajama -->
-        <div id="kurta-pajama-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-          <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
-            <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
-            <h2 class="text-2xl font-bold mb-4 text-pink-400">👑 Kurta Pajama - Timeless Elegance 👑</h2>
-            <p class="text-sm text-gray-300 leading-relaxed mb-2">
-              <strong>Origin and History:</strong><br>
-              The kurta-pajama has its roots in ancient India, evolving over centuries. The kurta originated from the Persian "qurta" meaning "a collarless shirt," while pajama comes from Persian "pai-jamah" meaning "leg garment."
-            </p>
-            <p class="text-sm text-gray-300 leading-relaxed mb-2">
-              <strong>Style Variations:</strong><br>
-              • Straight-cut Kurta: Traditional and formal<br>
-              • Anarkali Kurta: Flared from the chest down<br>
-              • Pathani Suit: Longer kurta with Peshawari collar<br>
-              • Churidar Pajama: Tight-fitting at the calves<br>
-              • Aligarhi Pajama: Loose and comfortable
-            </p>
-            <p class="text-sm text-gray-300 leading-relaxed">
-              <strong>Cultural Significance:</strong><br>
-              The kurta-pajama represents Indian elegance and comfort. It's worn across various religious communities and social backgrounds. Once primarily everyday wear, it has now gained status as occasion wear, particularly for festivals and ceremonies. Modern designers continue to reimagine the silhouette with contemporary elements.
-            </p>
-          </div>
-        </div>
-
-        <!-- Lehenga Choli -->
-        <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="lehenga-choli" data-region="north" data-gender="womens">
-          <div class="overflow-hidden rounded-lg mb-3">
-            <img src="/api/placeholder/400/320" alt="Lehenga Choli" class="w-full h-32 object-cover object-center outfit-image">
-          </div>
-          <h3 class="font-semibold mb-2 text-white">Lehenga Choli</h3>
-          <div class="flex justify-between text-sm text-gray-400 mb-2">
-            <span>North India</span>
-            <span>Women's Wear</span>
-          </div>
-          <p class="text-xs text-gray-400 mb-3">
-            Three-piece ensemble with a flowing skirt (lehenga), fitted blouse (choli), and decorative dupatta (scarf).
-          </p>
-          <button 
-            onclick="document.getElementById('lehenga-choli-details').classList.remove('hidden')" 
-            class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+          <button
+            class="px-4 py-2 rounded-full bg-pink-500 text-white hover:bg-pink-600 transition-colors hidden md:block"
           >
-            View Details
+            Sign Up
           </button>
-        </div>
-
-        <!-- Inline Modal for Lehenga Choli -->
-        <div id="lehenga-choli-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-          <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
-            <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
-            <h2 class="text-2xl font-bold mb-4 text-pink-400">💫 Lehenga Choli - Royal Splendor 💫</h2>
-            <p class="text-sm text-gray-300 leading-relaxed mb-2">
-              <strong>Origin and History:</strong><br>
-              The lehenga choli evolved from ancient Hindu costumes, with roots in the Mughal era and Rajputana influence. Early forms date back to the 10th century, appearing in medieval temple sculptures and paintings.
-            </p>
-            <p class="text-sm text-gray-300 leading-relaxed mb-2">
-              <strong>Regional Styles:</strong><br>
-              • Rajasthani: Vibrant colors with mirror work and intricate embroidery<br>
-              • Gujarati: Colorful with bandhani (tie-dye) patterns and mirror embellishments<br>
-              • Lucknowi: Delicate chikankari embroidery and subtle elegance<br>
-              • Banarasi: Luxurious silk with gold brocade work<br>
-              • Punjabi: Bright colors with phulkari embroidery
-            </p>
-            <p class="text-sm text-gray-300 leading-relaxed">
-              <strong>Cultural Significance:</strong><br>
-              The lehenga choli symbolizes celebration and auspiciousness in Indian culture. It's the traditional bridal attire in many regions of North India and continues to be a staple for festivals and celebrations. Modern interpretations blend traditional craftsmanship with contemporary silhouettes, making it a versatile choice for various occasions.
-            </p>
-          </div>
-        </div>
-        
-        <!-- Dhoti Kurta -->
-        <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item" data-outfit="dhoti-kurta" data-region="pan-india" data-gender="mens">
-          <div class="overflow-hidden rounded-lg mb-3">
-            <img src="/api/placeholder/400/320" alt="Dhoti Kurta" class="w-full h-32 object-cover object-center outfit-image">
-          </div>
-          <h3 class="font-semibold mb-2">Dhoti Kurta</h3>
-          <div class="flex justify-between text-sm text-gray-400 mb-2">
-            <span>Pan-India</span>
-            <span>Men's Wear</span>
-          </div>
-          <p class="text-xs text-gray-400 mb-3">Traditional attire featuring a draped lower garment (dhoti) paired with a kurta, representing cultural heritage.</p>
-          <button class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors" data-outfit="dhoti-kurta">View Details</button>
-        </div>
-        
-        <!-- Salwar Kameez -->
-        <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item" data-outfit="salwar-kameez" data-region="north" data-gender="womens">
-          <div class="overflow-hidden rounded-lg mb-3">
-            <img src="/api/placeholder/400/320" alt="Salwar Kameez" class="w-full h-32 object-cover object-center outfit-image">
-          </div>
-          <h3 class="font-semibold mb-2">Salwar Kameez</h3>
-          <div class="flex justify-between text-sm text-gray-400 mb-2">
-            <span>North India</span>
-            <span>Women's Wear</span>
-          </div>
-          <p class="text-xs text-gray-400 mb-3">Comfortable ensemble with a tunic (kameez), loose trousers (salwar), and scarf (dupatta).</p>
-          <button class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors" data-outfit="salwar-kameez">View Details</button>
-        </div>
-        
-        <!-- Mekhela Chador -->
-        <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item" data-outfit="mekhela-chador" data-region="northeast" data-gender="womens">
-          <div class="overflow-hidden rounded-lg mb-3">
-            <img src="/api/placeholder/400/320" alt="Mekhela Chador" class="w-full h-32 object-cover object-center outfit-image">
-          </div>
-          <h3 class="font-semibold mb-2">Mekhela Chador</h3>
-          <div class="flex justify-between text-sm text-gray-400 mb-2">
-            <span>Northeast India</span>
-            <span>Women's Wear</span>
-          </div>
-          <p class="text-xs text-gray-400 mb-3">Traditional Assamese attire consisting of a cylindrical lower garment (mekhela) and upper wrap (chador).</p>
-          <button class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors" data-outfit="mekhela-chador">View Details</button>
-        </div>
-        
-        <!-- Pathani Suit -->
-        <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item" data-outfit="pathani-suit" data-region="north" data-gender="mens">
-          <div class="overflow-hidden rounded-lg mb-3">
-            <img src="/api/placeholder/400/320" alt="Pathani Suit" class="w-full h-32 object-cover object-center outfit-image">
-          </div>
-          <h3 class="font-semibold mb-2">Pathani Suit</h3>
-          <div class="flex justify-between text-sm text-gray-400 mb-2">
-            <span>North India</span>
-            <span>Men's Wear</span>
-          </div>
-          <p class="text-xs text-gray-400 mb-3">Elegant outfit with a long kurta and loose-fitting salwar, often made from heavy fabrics with minimal embroidery.</p>
-          <button class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors" data-outfit="pathani-suit">View Details</button>
-        </div>
-        
-        <!-- Mundu -->
-        <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item" data-outfit="mundu" data-region="south" data-gender="mens">
-          <div class="overflow-hidden rounded-lg mb-3">
-            <img src="/api/placeholder/400/320" alt="Mundu" class="w-full h-32 object-cover object-center outfit-image">
-          </div>
-          <h3 class="font-semibold mb-2">Mundu</h3>
-          <div class="flex justify-between text-sm text-gray-400 mb-2">
-            <span>South India</span>
-            <span>Men's Wear</span>
-          </div>
-          <p class="text-xs text-gray-400 mb-3">Traditional Kerala garment, a simple white cotton dhoti often with gold border (kasavu), paired with an angavastra.</p>
-          <button class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors" data-outfit="mundu">View Details</button>
-        </div>
-        
-        <!-- Kasavu Set -->
-        <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item" data-outfit="kasavu-set" data-region="south" data-gender="womens">
-          <div class="overflow-hidden rounded-lg mb-3">
-            <img src="/api/placeholder/400/320" alt="Kasavu Set" class="w-full h-32 object-cover object-center outfit-image">
-          </div>
-          <h3 class="font-semibold mb-2">Kasavu Set</h3>
-          <div class="flex justify-between text-sm text-gray-400 mb-2">
-            <span>South India</span>
-            <span>Women's Wear</span>
-          </div>
-          <p class="text-xs text-gray-400 mb-3">Kerala's traditional attire featuring cream or white cotton with distinctive gold borders (kasavu).</p>
-          <button class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors" data-outfit="kasavu-set">View Details</button>
-        </div>
-        
-        <!-- Bandhgala -->
-        <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item" data-outfit="bandhgala" data-region="north" data-gender="mens">
-          <div class="overflow-hidden rounded-lg mb-3">
-            <img src="/api/placeholder/400/320" alt="Bandhgala" class="w-full h-32 object-cover object-center outfit-image">
-          </div>
-          <h3 class="font-semibold mb-2">Bandhgala</h3>
-          <div class="flex justify-between text-sm text-gray-400 mb-2">
-            <span>North India</span>
-            <span>Men's Wear</span>
-          </div>
-          <p class="text-xs text-gray-400 mb-3">Formal jacket with a mandarin collar, also known as Jodhpuri suit, representing royal heritage.</p>
-          <button class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors" data-outfit="bandhgala">View Details</button>
-        </div>
-        
-        <!-- Phiran -->
-        <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item" data-outfit="phiran" data-region="north" data-gender="unisex">
-          <div class="overflow-hidden rounded-lg mb-3">
-            <img src="/api/placeholder/400/320" alt="Phiran" class="w-full h-32 object-cover object-center outfit-image">
-          </div>
-          <h3 class="font-semibold mb-2">Phiran</h3>
-          <div class="flex justify-between text-sm text-gray-400 mb-2">
-            <span>North India</span>
-            <span>Unisex</span>
-          </div>
-          <p class="text-xs text-gray-400 mb-3">Traditional Kashmiri loose woolen robe worn by both men and women, designed for warmth in cold weather.</p>
-          <button class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors" data-outfit="phiran">View Details</button>
-        </div>
-        
-        <!-- Ghaghara Choli -->
-        <div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item" data-outfit="ghaghara-choli" data-region="west" data-gender="womens">
-          <div class="overflow-hidden rounded-lg mb-3">
-            <img src="/api/placeholder/400/320" alt="Ghaghara Choli" class="w-full h-32 object-cover object-center outfit-image">
-          </div>
-          <h3 class="font-semibold mb-2">Ghaghara Choli</h3>
-          <div class="flex justify-between text-sm text-gray-400 mb-2">
-            <span>West India</span>
-            <span>Women's Wear</span>
-          </div>
-          <p class="text-xs text-gray-400 mb-3">Traditional Rajasthani and Gujarati ensemble with full skirt (ghaghara), fitted blouse (choli), and veil (odhni).</p>
-          <button class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors" data-outfit="ghaghara-choli">View Details</button>
+          <button
+            id="mobileMenuBtn"
+            class="md:hidden text-gray-200 hover:text-pink-500"
+          >
+            <i class="fas fa-bars text-xl"></i>
+          </button>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 pt-16 pb-8">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-        <div>
-          <div class="flex items-center space-x-2 mb-4">
-            <div class="text-pink-500 text-2xl"><i class="fas fa-tshirt"></i></div>
-              <div class="text-xl font-bold">Vastra<span class="text-pink-500">Verse</span></div>
+      <!-- Mobile Menu -->
+      <div id="mobileMenu" class="md:hidden bg-gray-800 hidden">
+        <div class="container mx-auto px-4 py-4 flex flex-col space-y-3">
+          <a
+            href="index.html"
+            class="block py-2 hover:text-pink-500 transition-colors"
+            >Home</a
+          >
+          <a
+            href="about.html"
+            class="block py-2 hover:text-pink-500 transition-colors"
+            >About</a
+          >
+          <a
+            href="Indian Festivals.html"
+            class="block py-2 hover:text-pink-500 transition-colors"
+            >Festivals</a
+          >
+          <a
+            href="chatbot.html"
+            class="block py-2 hover:text-pink-500 transition-colors"
+            >Chatbot</a
+          >
+          <button
+            class="px-4 py-2 rounded-full bg-pink-500 text-white hover:bg-pink-600 transition-colors w-full mt-2"
+          >
+            Sign Up
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+      class="pt-24 pb-6 bg-gradient-to-r from-pink-500 to-purple-600 text-white"
+    >
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-8">
+          <h1 class="text-4xl md:text-5xl font-bold mb-6">
+            Traditional <span class="text-yellow-300">Outfits</span>
+          </h1>
+          <p class="text-xl max-w-3xl mx-auto">
+            Explore the vibrant tapestry of India's diverse traditional clothing
+            from every region
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Search and Filter Section -->
+    <section class="py-6 bg-gray-800">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row gap-4">
+          <div class="flex-1">
+            <input
+              type="text"
+              id="outfitSearch"
+              placeholder="Search for outfits..."
+              class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500"
+            />
           </div>
-          <p class="text-gray-400 mb-4">Celebrating the rich diversity of Indian traditional fashion and culture through AI innovation.</p>
-          <div class="flex space-x-4">
-            <a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">
-              <i class="fab fa-twitter"></i>
-            </a>
-            <a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">
-              <i class="fab fa-instagram"></i>
-            </a>
-            <a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">
-              <i class="fab fa-youtube"></i>
-            </a>
-          </div>
+          <select
+            id="regionFilter"
+            class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500"
+          >
+            <option value="all">All Regions</option>
+            <option value="north">North India</option>
+            <option value="south">South India</option>
+            <option value="east">East India</option>
+            <option value="west">West India</option>
+            <option value="northeast">Northeast India</option>
+          </select>
+          <select
+            id="genderFilter"
+            class="px-4 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-pink-500"
+          >
+            <option value="all">All Categories</option>
+            <option value="womens">Women's Wear</option>
+            <option value="mens">Men's Wear</option>
+            <option value="unisex">Unisex</option>
+          </select>
         </div>
-        
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
-          <ul class="space-y-2">
-            <li><a href="index.html" class="text-gray-400 hover:text-pink-500 transition-colors">Home</a></li>
-            <li><a href="about.html" class="text-gray-400 hover:text-pink-500 transition-colors">About Us</a></li>
-            <li><a href="chatbot.html" class="text-gray-400 hover:text-pink-500 transition-colors">AI Chatbot</a></li>
-            <li><a href="Festival Calendar.html" class="text-gray-400 hover:text-pink-500 transition-colors">Festival Calendar</a></li>
-            <li><a href="Traditional Outfits.html" class="text-gray-400 hover:text-pink-500 transition-colors">Traditional Outfits</a></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Resources</h4>
-          <ul class="space-y-2">
-            <li><a href="blog.html" class="text-gray-400 hover:text-pink-500 transition-colors">Blog</a></li>
-            <li><a href="Cultural Guides.html" class="text-gray-400 hover:text-pink-500 transition-colors">Cultural Guides</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">Outfit Dictionary</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-pink-500 transition-colors">Regional Styles</a></li>
-            <li><a href="FAQ.html" class="text-gray-400 hover:text-pink-500 transition-colors">FAQ</a></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h4 class="text-lg font-semibold mb-4">Subscribe to Our Newsletter</h4>
-          <p class="text-gray-400 mb-4">Stay updated with the latest festival guides and traditional fashion trends</p>
-          <form class="mb-4">
-            <div class="flex">
-              <input type="email" placeholder="Your email" class="px-4 py-2 rounded-l-md bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 w-full">
-              <button type="submit" class="px-4 py-2 bg-pink-500 text-white rounded-r-md hover:bg-pink-600 transition-colors">
-                <i class="fas fa-paper-plane"></i>
-              </button>
+      </div>
+    </section>
+
+    <!-- All Outfits Section -->
+    <section class="py-12 bg-gray-850">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8 text-center">
+          Complete Outfit <span class="text-pink-500">Guide</span>
+        </h2>
+
+        <div
+          id="outfitsContainer"
+          class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6"
+        >
+          <!-- Saree -->
+          <div
+            class="bg-gray-800 p-4 rounded-lg border border-pink-500 transition-colors cursor-pointer outfit-item relative"
+            data-outfit="saree"
+            data-region="pan-india"
+            data-gender="womens"
+          >
+            <div class="overflow-hidden rounded-lg mb-3">
+              <img
+                src="images/saree.png"
+                alt="Saree"
+                class="w-full h-32 object-cover object-center outfit-image"
+              />
             </div>
-          </form>
+            <h3 class="font-semibold mb-2 text-white">Saree</h3>
+            <div class="flex justify-between text-sm text-gray-400 mb-2">
+              <span>Pan-India</span>
+              <span>Women's Wear</span>
+            </div>
+            <p class="text-xs text-gray-400 mb-3">
+              A graceful drape of 5-9 meters fabric, the saree is India's iconic
+              traditional garment with endless regional variations.
+            </p>
+            <button
+              onclick="document.getElementById('saree-details').classList.remove('hidden')"
+              class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+            >
+              View Details
+            </button>
+          </div>
+
+          <!-- Inline Modal for Saree -->
+          <div
+            id="saree-details"
+            class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
+          >
+            <div
+              class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative"
+            >
+              <button
+                onclick='this.parentElement.parentElement.classList.add("hidden")'
+                class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold"
+              >
+                ×
+              </button>
+              <h2 class="text-2xl font-bold mb-4 text-pink-400">
+                ✨ Saree - The Timeless Drape ✨
+              </h2>
+              <p class="text-sm text-gray-300 leading-relaxed mb-2">
+                <strong>Origin and History:</strong><br />
+                Dating back over 5,000 years, the saree is one of the oldest
+                garments still worn today. References to saree-like drapes
+                appear in ancient texts and sculptures across the Indian
+                subcontinent.
+              </p>
+              <p class="text-sm text-gray-300 leading-relaxed mb-2">
+                <strong>Regional Variations:</strong><br />
+                • Banarasi (Uttar Pradesh): Opulent silk with gold and silver
+                brocade<br />
+                • Kanjivaram (Tamil Nadu): Heavy silk with contrasting
+                borders<br />
+                • Paithani (Maharashtra): Vibrant silks with peacock motifs<br />
+                • Chanderi (Madhya Pradesh): Lightweight with gold borders<br />
+                • Sambalpuri (Odisha): Ikat patterns with traditional motifs
+              </p>
+              <p class="text-sm text-gray-300 leading-relaxed">
+                <strong>Cultural Significance:</strong><br />
+                The saree transcends being just a garment and represents
+                cultural identity, family heritage, and artistic tradition.
+                Different draping styles, weaves, and motifs tell stories of
+                regional identity and social status. The saree continues to
+                evolve with contemporary designs while maintaining its cultural
+                roots.
+              </p>
+            </div>
+          </div>
+
+          <!-- Kurta Pajama -->
+          <div
+            class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative"
+            data-outfit="kurta-pajama"
+            data-region="north"
+            data-gender="mens"
+          >
+            <div class="overflow-hidden rounded-lg mb-3">
+              <img
+                src="images/kurta-pajama.png"
+                alt="Kurta Pajama"
+                class="w-full h-32 object-cover object-center outfit-image"
+              />
+            </div>
+            <h3 class="font-semibold mb-2 text-white">Kurta Pajama</h3>
+            <div class="flex justify-between text-sm text-gray-400 mb-2">
+              <span>North India</span>
+              <span>Men's Wear</span>
+            </div>
+            <p class="text-xs text-gray-400 mb-3">
+              Classic combination of a long tunic (kurta) with loose-fitting
+              trousers (pajama), a comfortable and elegant attire.
+            </p>
+            <button
+              onclick="document.getElementById('kurta-pajama-details').classList.remove('hidden')"
+              class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+            >
+              View Details
+            </button>
+          </div>
+
+          <!-- Inline Modal for Kurta Pajama -->
+          <div
+            id="kurta-pajama-details"
+            class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
+          >
+            <div
+              class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative"
+            >
+              <button
+                onclick='this.parentElement.parentElement.classList.add("hidden")'
+                class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold"
+              >
+                ×
+              </button>
+              <h2 class="text-2xl font-bold mb-4 text-pink-400">
+                👑 Kurta Pajama - Timeless Elegance 👑
+              </h2>
+              <p class="text-sm text-gray-300 leading-relaxed mb-2">
+                <strong>Origin and History:</strong><br />
+                The kurta-pajama has its roots in ancient India, evolving over
+                centuries. The kurta originated from the Persian "qurta" meaning
+                "a collarless shirt," while pajama comes from Persian
+                "pai-jamah" meaning "leg garment."
+              </p>
+              <p class="text-sm text-gray-300 leading-relaxed mb-2">
+                <strong>Style Variations:</strong><br />
+                • Straight-cut Kurta: Traditional and formal<br />
+                • Anarkali Kurta: Flared from the chest down<br />
+                • Pathani Suit: Longer kurta with Peshawari collar<br />
+                • Churidar Pajama: Tight-fitting at the calves<br />
+                • Aligarhi Pajama: Loose and comfortable
+              </p>
+              <p class="text-sm text-gray-300 leading-relaxed">
+                <strong>Cultural Significance:</strong><br />
+                The kurta-pajama represents Indian elegance and comfort. It's
+                worn across various religious communities and social
+                backgrounds. Once primarily everyday wear, it has now gained
+                status as occasion wear, particularly for festivals and
+                ceremonies. Modern designers continue to reimagine the
+                silhouette with contemporary elements.
+              </p>
+            </div>
+          </div>
+
+          <!-- Lehenga Choli -->
+          <div
+            class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative"
+            data-outfit="lehenga-choli"
+            data-region="north"
+            data-gender="womens"
+          >
+            <div class="overflow-hidden rounded-lg mb-3">
+              <img
+                src="images/lehnga-choli.jpeg"
+                alt="Lehenga Choli"
+                class="w-full h-32 object-cover object-center outfit-image"
+              />
+            </div>
+            <h3 class="font-semibold mb-2 text-white">Lehenga Choli</h3>
+            <div class="flex justify-between text-sm text-gray-400 mb-2">
+              <span>North India</span>
+              <span>Women's Wear</span>
+            </div>
+            <p class="text-xs text-gray-400 mb-3">
+              Three-piece ensemble with a flowing skirt (lehenga), fitted blouse
+              (choli), and decorative dupatta (scarf).
+            </p>
+            <button
+              onclick="document.getElementById('lehenga-choli-details').classList.remove('hidden')"
+              class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+            >
+              View Details
+            </button>
+          </div>
+
+          <!-- Inline Modal for Lehenga Choli -->
+          <div
+            id="lehenga-choli-details"
+            class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
+          >
+            <div
+              class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative"
+            >
+              <button
+                onclick='this.parentElement.parentElement.classList.add("hidden")'
+                class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold"
+              >
+                ×
+              </button>
+              <h2 class="text-2xl font-bold mb-4 text-pink-400">
+                💫 Lehenga Choli - Royal Splendor 💫
+              </h2>
+              <p class="text-sm text-gray-300 leading-relaxed mb-2">
+                <strong>Origin and History:</strong><br />
+                The lehenga choli evolved from ancient Hindu costumes, with
+                roots in the Mughal era and Rajputana influence. Early forms
+                date back to the 10th century, appearing in medieval temple
+                sculptures and paintings.
+              </p>
+              <p class="text-sm text-gray-300 leading-relaxed mb-2">
+                <strong>Regional Styles:</strong><br />
+                • Rajasthani: Vibrant colors with mirror work and intricate
+                embroidery<br />
+                • Gujarati: Colorful with bandhani (tie-dye) patterns and mirror
+                embellishments<br />
+                • Lucknowi: Delicate chikankari embroidery and subtle
+                elegance<br />
+                • Banarasi: Luxurious silk with gold brocade work<br />
+                • Punjabi: Bright colors with phulkari embroidery
+              </p>
+              <p class="text-sm text-gray-300 leading-relaxed">
+                <strong>Cultural Significance:</strong><br />
+                The lehenga choli symbolizes celebration and auspiciousness in
+                Indian culture. It's the traditional bridal attire in many
+                regions of North India and continues to be a staple for
+                festivals and celebrations. Modern interpretations blend
+                traditional craftsmanship with contemporary silhouettes, making
+                it a versatile choice for various occasions.
+              </p>
+            </div>
+          </div>
+
+          <!-- Dhoti Kurta -->
+          <div
+            class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative"
+            data-outfit="dhoti-kurta"
+            data-region="pan-india"
+            data-gender="mens"
+          >
+            <div class="overflow-hidden rounded-lg mb-3">
+              <img
+                src="images/dhoti-kurta.jpeg"
+                alt="Dhoti Kurta"
+                class="w-full h-32 object-cover object-center outfit-image"
+              />
+            </div>
+            <h3 class="font-semibold mb-2 text-white">Dhoti Kurta</h3>
+            <div class="flex justify-between text-sm text-gray-400 mb-2">
+              <span>Pan-India</span>
+              <span>Men's Wear</span>
+            </div>
+            <p class="text-xs text-gray-400 mb-3">
+              Traditional attire featuring a draped lower garment (dhoti) paired
+              with a kurta, representing cultural heritage.
+            </p>
+            <button
+              onclick="document.getElementById('dhoti-kurta-details').classList.remove('hidden')"
+              class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+            >
+              View Details
+            </button>
+          </div>
+
+          <!-- Inline Modal for Dhoti Kurta -->
+          <div
+            id="dhoti-kurta-details"
+            class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
+          >
+            <div
+              class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative"
+            >
+              <button
+                onclick='this.parentElement.parentElement.classList.add("hidden")'
+                class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold"
+              >
+                ×
+              </button>
+              <h2 class="text-2xl font-bold mb-4 text-pink-400">
+                🕊️ Dhoti Kurta - Timeless Grace 🕊️
+              </h2>
+              <p class="text-sm text-gray-300 leading-relaxed mb-2">
+                <strong>Origin and History:</strong><br />
+                The dhoti has ancient origins dating back to the Indus Valley
+                Civilization. Traditionally worn by men across India, it
+                symbolizes purity and is often associated with rituals,
+                festivals, and classical disciplines like dance and yoga.
+              </p>
+              <p class="text-sm text-gray-300 leading-relaxed mb-2">
+                <strong>Regional Styles:</strong><br />
+                • Bengali: Dhoti with pleats at the front, paired with a long
+                kurta<br />
+                • Tamil Nadu: Veshti (white dhoti with gold border) with
+                angavastram<br />
+                • Maharashtra: Narrower drape with Nauvari-style fold<br />
+                • Uttar Pradesh: Dhoti with a knee-length kurta and scarf<br />
+                • Odisha: Gamucha with cotton dhoti and short kurta
+              </p>
+              <p class="text-sm text-gray-300 leading-relaxed">
+                <strong>Cultural Significance:</strong><br />
+                The dhoti kurta is not just attire but a representation of
+                humility and tradition. Worn during weddings, ceremonies, and
+                festive occasions, it’s seen as a symbol of honor and respect in
+                Indian households. In modern fashion, it is adapted for formal
+                events with designer variations.
+              </p>
+            </div>
+          </div>
+
+          <!-- Salwar Kameez -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="salwar-kameez" data-region="north" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/salwar-kammej.png" alt="Salwar Kameez" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Salwar Kameez</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>North India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Comfortable ensemble with a tunic (kameez), loose trousers (salwar), and scarf (dupatta).
+  </p>
+  <button 
+    onclick="document.getElementById('salwar-kameez-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Salwar Kameez -->
+<div id="salwar-kameez-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🌸 Salwar Kameez - Everyday Elegance 🌸</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The salwar kameez originated in Central Asia and was popularized in India during the Mughal period. It became a staple outfit for women in Punjab and surrounding regions, appreciated for its modesty and comfort.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Regional Styles:</strong><br>
+      • Punjabi: Patiala salwar with short kameez and phulkari dupatta<br>
+      • Lucknowi: Chikankari embroidery on pastel fabrics<br>
+      • Pakistani: Long straight kameez with narrow salwar<br>
+      • Afghan: High-neck, flowing kameez with pleated salwar<br>
+      • Modern: Anarkali or asymmetrical kameez with churidar or palazzos
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The salwar kameez is one of the most versatile outfits for Indian women, worn from casual daywear to grand celebrations. It embodies cultural identity while evolving with contemporary trends, often reflecting local embroidery, prints, and fabrics.
+    </p>
+  </div>
+</div>
+
+
+          <!-- Mekhela Chador -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="mekhela-chador" data-region="northeast" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/mekhela-chador.webp" alt="Mekhela Chador" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Mekhela Chador</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>Northeast India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional Assamese attire consisting of a cylindrical lower garment (mekhela) and upper wrap (chador).
+  </p>
+  <button 
+    onclick="document.getElementById('mekhela-chador-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Mekhela Chador -->
+<div id="mekhela-chador-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🌿 Mekhela Chador - Elegance of Assam 🌿</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      Mekhela Chador is the traditional dress of Assamese women, tracing its origins to ancient times and deeply linked with the Bihu festival and daily cultural practices. The garment reflects the identity and grace of Assamese heritage.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Regional Styles:</strong><br>
+      • Sualkuchi Silk: Known for its golden muga silk and exquisite patterns<br>
+      • Cotton Variants: Everyday wear with traditional motifs and handloom textures<br>
+      • Tribal Influence: Rich designs from Bodo, Mising, and other communities<br>
+      • Bridal: Heavy silk with zari and traditional Assamese motifs like Jaapi and Kolka
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      Worn during festivals, weddings, and formal gatherings, Mekhela Chador represents feminine dignity and Assamese craftsmanship. Weavers often handcraft each piece with native designs, turning every attire into a piece of art and pride for the wearer.
+    </p>
+  </div>
+</div>
+
+
+          <!-- Pathani Suit -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="pathani-suit" data-region="north" data-gender="mens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/pathani-suit.png" alt="Pathani Suit" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Pathani Suit</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>North India</span>
+    <span>Men's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Elegant outfit with a long kurta and loose-fitting salwar, often made from heavy fabrics with minimal embroidery.
+  </p>
+  <button 
+    onclick="document.getElementById('pathani-suit-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Pathani Suit -->
+<div id="pathani-suit-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🧥 Pathani Suit - Regal Grace for Men 🧥</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Pathani suit has its roots in the traditional attire of Pashtun tribes and became a prominent outfit in Northern India, especially in Punjab and Kashmir. It gained popularity for its bold, structured silhouette and ease of wear.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Regional Styles:</strong><br>
+      • Punjabi Pathani: Often paired with waistcoats for ceremonial flair<br>
+      • Kashmiri: Made from woolen or thick cotton fabrics for colder climates<br>
+      • Bollywood Influence: Solid colors with sharp tailoring for a polished look<br>
+      • Festive Variants: Embroidered collars and cuffs, paired with mojris
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Pathani suit is a symbol of masculine elegance and cultural pride. Frequently worn during Eid, weddings, and festive occasions, it conveys a sense of confidence and tradition while allowing for customization in modern fashion trends.
+    </p>
+  </div>
+</div>
+
+
+          <!-- Mundu -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="mundu" data-region="south" data-gender="mens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/mundu.png" alt="Mundu" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Mundu</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>South India</span>
+    <span>Men's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional Kerala garment, a simple white cotton dhoti often with gold border (kasavu), paired with an angavastra.
+  </p>
+  <button 
+    onclick="document.getElementById('mundu-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Mundu -->
+<div id="mundu-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🌾 Mundu - Grace of Kerala 🌾</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Mundu is a traditional garment of Kerala, dating back centuries, influenced by Dravidian dressing styles. It's deeply rooted in the state’s cultural, religious, and ceremonial traditions, worn widely by Hindu, Muslim, and Christian communities alike.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Regional Styles:</strong><br>
+      • Kasavu Mundu: Worn during festivals like Onam and Vishu, with golden borders<br>
+      • Kara Mundu: Simpler version with a colored stripe, used for daily wear<br>
+      • Double Mundu: Folded version for easier movement, common among elderly and rural folk<br>
+      • Festive Pairing: Worn with angavastram or jubba (tunic) for occasions
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The mundu embodies purity and elegance, especially the white kasavu version. It symbolizes Kerala’s traditional values, simplicity, and social grace. Mundu is not just a dress, but a statement of cultural pride worn during festivals, weddings, and temple ceremonies.
+    </p>
+  </div>
+</div>
+
+          <!-- Kasavu Set -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="kasavu-set" data-region="south" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/kasavu-set.webp" alt="Kasavu Set" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Kasavu Set</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>South India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Kerala's traditional attire featuring cream or white cotton with distinctive gold borders (kasavu).
+  </p>
+  <button 
+    onclick="document.getElementById('kasavu-set-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Kasavu Set -->
+<div id="kasavu-set-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🌼 Kasavu Set - Kerala's Golden Elegance 🌼</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Kasavu set traces its origins to the ancient handloom traditions of Kerala. Originally worn by royalty and upper-caste women, the fabric's hallmark is its gleaming golden zari borders paired with pure white or cream cotton — symbolizing prosperity and purity.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Regional Styles:</strong><br>
+      • Set Mundu: Two-piece garment with a lower drape (mundu) and upper wrap (neriyathu)<br>
+      • Kasavu Saree: A single long drape with gold borders, modernized form for urban celebrations<br>
+      • Temple Kasavu: Often worn with traditional gold jewelry during Onam and Vishu<br>
+      • Designer Kasavu: Embellished versions for weddings and cultural shows
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Kasavu set represents Kerala's deep connection with simplicity and grace. Traditionally gifted to brides and worn during festivals like Onam, it is a timeless expression of the state's textile artistry. It stands as a proud symbol of femininity, serenity, and heritage.
+    </p>
+  </div>
+</div>
+
+
+          <!-- Bandhgala -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="bandhgala" data-region="north" data-gender="mens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/badhgala.png" alt="Bandhgala" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Bandhgala</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>North India</span>
+    <span>Men's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Formal jacket with a mandarin collar, also known as Jodhpuri suit, representing royal heritage.
+  </p>
+  <button 
+    onclick="document.getElementById('bandhgala-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Bandhgala -->
+<div id="bandhgala-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👑 Bandhgala - The Royal Jodhpuri Suit 👑</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Bandhgala, also known as the Jodhpuri suit, originated in the princely state of Jodhpur in Rajasthan. It was developed during the British Raj as a formal fusion of Indian and Western elements, combining the comfort of Indian silhouettes with the structure of British tailoring.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Regional Styles:</strong><br>
+      • Classic Jodhpuri: Rich fabrics like velvet or silk, with intricate embroidery or metal buttons<br>
+      • Contemporary Bandhgala: Minimalist design with tailored fit, worn with trousers or churidar<br>
+      • Embroidered Bandhgala: Used in weddings and formal events with zari or thread work<br>
+      • Layered Bandhgala: Paired with shawls or capes in cooler climates
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Bandhgala stands as a symbol of Indian nobility and class. It has evolved from royal courts to modern runways, and is a popular choice for weddings, official gatherings, and cultural ceremonies. It signifies refinement, sophistication, and timeless style.
+    </p>
+  </div>
+</div>
+
+
+          <!-- Phiran -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="phiran" data-region="north" data-gender="unisex">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/phiran.png" alt="Phiran" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Phiran</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>North India</span>
+    <span>Unisex</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional Kashmiri loose woolen robe worn by both men and women, designed for warmth in cold weather.
+  </p>
+  <button 
+    onclick="document.getElementById('phiran-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Phiran -->
+<div id="phiran-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">❄️ Phiran - The Warm Kashmiri Robe ❄️</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Phiran is a traditional garment from the Kashmir Valley, historically worn to protect against the harsh cold weather. This loose-fitting woolen robe has been a part of Kashmiri culture for centuries, with its origins rooted in the region’s unique climatic and cultural needs.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Regional Styles:</strong><br>
+      • Classic Kashmiri Phiran: Long woolen robe, often embroidered, worn during winters.<br>
+      • Modern Phiran: Lighter versions made with cotton or synthetic fabrics, worn during milder temperatures.<br>
+      • Embroidered Phiran: Intricate embroidery work on the sleeves and borders, especially worn during festivals and special occasions.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Phiran is not only a piece of clothing but also a symbol of Kashmiri heritage. It represents the region’s adaptability to its harsh winter environment. While the robe is functional, it also carries deep cultural value, being worn in social gatherings, religious ceremonies, and everyday life.
+    </p>
+  </div>
+</div>
+
+
+          <!-- Ghaghara Choli -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="ghaghara-choli" data-region="west" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/ghagara-choli.png" alt="Ghaghara Choli" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Ghaghara Choli</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>West India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional Rajasthani and Gujarati ensemble with full skirt (ghaghara), fitted blouse (choli), and veil (odhni).
+  </p>
+  <button 
+    onclick="document.getElementById('ghaghara-choli-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Ghaghara Choli -->
+<div id="ghaghara-choli-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👗 Ghaghara Choli - The Traditional Splendor 👗</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Ghaghara Choli has roots in Rajasthan and Gujarat, reflecting the rich culture of the region. This ensemble has been worn by women for centuries, originally made from vibrant fabrics like cotton, silk, and brocade.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Regional Styles:</strong><br>
+      • Rajasthani: The Ghaghara is typically embellished with mirrors, embroidery, and bright colors.<br>
+      • Gujarati: Includes intricate bandhani (tie-dye) patterns and embellishments.<br>
+      • Marwari: Features traditional motifs and luxurious fabrics for royal ceremonies.<br>
+      • Kutch: Known for the use of multi-colored threads and beaded embroidery.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Ghaghara Choli is worn during festivals, weddings, and important ceremonies. It symbolizes grace and elegance, representing the traditional beauty of West India. In modern times, it has been adapted with lighter fabrics for ease of wear while maintaining its cultural significance.
+    </p>
+  </div>
+</div>
+<!-- Poots -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="poots" data-region="north" data-gender="mens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/poots.png" alt="Poots" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Poots</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>North India</span>
+    <span>Men's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional pants worn by men, especially in North India, paired with a kurta or chadar.
+  </p>
+  <button 
+    onclick="document.getElementById('poots-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Poots -->
+<div id="poots-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👖 Poots - The Traditional North Indian Pants 👖</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      Poots are traditional pants worn in various regions of North India, often associated with the rural and village communities. The attire is typically made from cotton or woolen fabric, designed to suit the climate and lifestyle.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Regional Styles:</strong><br>
+      • Rural: Simple cotton poots worn with a kurta.<br>
+      • Urban: More refined poots with additional embroidery or detailing, often worn for ceremonial purposes.<br>
+      • Hill Regions: Woolen poots for cold weather, typically paired with a thick woolen chadar or shawl.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      Poots have been a symbol of comfort and practicality in rural North India. They are often worn during festivals, weddings, and cultural events. The garment has evolved over time, with modern styles reflecting contemporary preferences, yet retaining its traditional charm.
+    </p>
+  </div>
+</div>
+
+<!-- Taranga -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="taranga" data-region="north" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/taranga.png" alt="Taranga" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Taranga</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>North India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional headgear worn by Kashmiri women, especially after marriage, symbolizing cultural identity.
+  </p>
+  <button 
+    onclick="document.getElementById('taranga-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Taranga -->
+<div id="taranga-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🧕 Taranga – The Traditional Kashmiri Headwear 🧕</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Taranga is a traditional headscarf worn by Kashmiri Pandit women. It is often gifted to brides during marriage and symbolizes dignity and devotion. Over time, it has become a cultural emblem, worn primarily on festive or religious occasions.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The Taranga is typically made of fine cotton or silk.<br>
+      • It starts from the forehead and extends down the back, held in place with a padded base.<br>
+      • Often embellished with lace, embroidery, or zari work, representing the status of the wearer.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      Wearing the Taranga is a mark of married status among Kashmiri Pandit women. Though its everyday use has declined, it remains an important part of cultural identity and is preserved through community events and rituals.
+    </p>
+  </div>
+</div>
+<!-- Pichora -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="pichora" data-region="north" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/pichora.png" alt="Pichora" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Pichora</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>North India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Vibrant traditional veil worn by Kumaoni women during weddings and rituals, symbolizing auspiciousness and heritage.
+  </p>
+  <button 
+    onclick="document.getElementById('pichora-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Pichora -->
+<div id="pichora-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👰 Pichora – The Sacred Kumaoni Veil 👰</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and Usage:</strong><br>
+      The Pichora is a traditional veil worn by married women in Uttarakhand’s Kumaon region, especially during weddings, pujas, and other auspicious events. It is a key part of the bridal attire.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Characteristics:</strong><br>
+      • Usually made of saffron or yellow fabric, representing purity and prosperity.<br>
+      • Adorned with red patterns, especially circular motifs representing the sun.<br>
+      • Hand-printed or block-printed with auspicious symbols like swastikas and lotus flowers.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Pichora is not just a garment but a sacred symbol. It signifies marital status, blessings, and community values, passed down across generations during traditional ceremonies.
+    </p>
+  </div>
+</div>
+
+<!-- Angrakha -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="angrakha" data-region="north" data-gender="mens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/angrakha.png" alt="Angrakha" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Angrakha</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>North India</span>
+    <span>Men's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional royal tunic with an overlapping front panel, worn in Rajasthan and northern India, symbolizing elegance and dignity.
+  </p>
+  <button 
+    onclick="document.getElementById('angrakha-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Angrakha -->
+<div id="angrakha-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🤵 Angrakha – Regal Wrap of the Royals 🤵</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Historical Roots:</strong><br>
+      The Angrakha originated in the royal courts of Rajasthan and Gujarat, where it was worn by kings, warriors, and nobles. The name comes from Sanskrit meaning "body protector."
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design & Features:</strong><br>
+      • Characterized by its asymmetric overlapping flaps tied at the side or under the arm.<br>
+      • Typically crafted in silk, cotton, or muslin with embroidery, mirror work, or block prints.<br>
+      • Comes in long and short variants depending on the occasion and climate.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      A symbol of elegance, the Angrakha is still worn today during cultural performances, traditional weddings, and festivals. It’s a living reminder of India’s princely heritage and classical style.
+    </p>
+  </div>
+</div>
+
+<!-- Kediyu -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="kediyu" data-region="west" data-gender="mens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/kediyu.png" alt="Kediyu" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Kediyu</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>West India</span>
+    <span>Men's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional Gujarati upper garment, worn with a dhoti, featuring pleated flares and mirror or thread embroidery.
+  </p>
+  <button 
+    onclick="document.getElementById('kediyu-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Kediyu -->
+<div id="kediyu-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🕺 Kediyu – The Vibrant Spirit of Gujarat 🕺</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and Use:</strong><br>
+      The Kediyu is a traditional upper garment worn by men in Gujarat, particularly in the Saurashtra and Kutch regions. It is popularly seen during folk festivals like Navratri.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design Highlights:</strong><br>
+      • Short, flared tunic with tight gathers around the chest and waist.<br>
+      • Typically paired with a dhoti or churidar.<br>
+      • Embellished with bandhani prints, mirror work, or intricate embroidery.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Kediyu reflects Gujarat's colorful culture and is a staple outfit for Garba and Dandiya Raas performances. It embodies joy, tradition, and rhythmic movement.
+    </p>
+  </div>
+</div>
+
+<!-- Chorno -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="chorno" data-region="west" data-gender="mens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/chorno.jpeg" alt="Chorno" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Chorno</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>West India</span>
+    <span>Men's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional Gujarati lower garment, a type of loose-fitting trouser tied with a string, usually paired with Kediyu.
+  </p>
+  <button 
+    onclick="document.getElementById('chorno-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Chorno -->
+<div id="chorno-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👖 Chorno – The Traditional Trousers of Gujarat 👖</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and Use:</strong><br>
+      The Chorno is a traditional lower garment worn by men in the Gujarat region, often seen during cultural festivities like Navratri and rural functions.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Features:</strong><br>
+      • Loose and airy trousers tied at the waist with a drawstring.<br>
+      • Usually made of cotton for comfort in hot climates.<br>
+      • Allows ease of movement—ideal for dance and daily wear.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      Chorno is typically worn with Kediyu and forms a complete traditional male attire of Gujarat. It represents the vibrant rural and festive culture of the region.
+    </p>
+  </div>
+</div>
+
+<!-- Chaniya Choli -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="chaniya-choli" data-region="west" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/chaniya-choli.png" alt="Chaniya Choli" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Chaniya Choli</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>West India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Vibrant traditional Gujarati attire with a flared skirt (chaniya), blouse (choli), and dupatta, worn during festivals like Navratri.
+  </p>
+  <button 
+    onclick="document.getElementById('chaniya-choli-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Chaniya Choli -->
+<div id="chaniya-choli-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">💃 Chaniya Choli – The Festive Spirit of Gujarat 💃</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Overview:</strong><br>
+      Chaniya Choli is a traditional ensemble from Gujarat, especially popular during the festival of Navratri, worn by women for Garba and Dandiya Raas dance.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Key Elements:</strong><br>
+      • <em>Chaniya</em>: A flared, embroidered skirt adorned with mirror work and bright prints.<br>
+      • <em>Choli</em>: A fitted blouse with decorative patterns, sometimes backless or sleeveless.<br>
+      • <em>Dupatta/Odhni</em>: A matching or contrasting scarf draped gracefully.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Relevance:</strong><br>
+      The Chaniya Choli represents joy, celebration, and feminine elegance. It has evolved into a cultural fashion statement and is deeply rooted in Gujarat's festive traditions.
+    </p>
+  </div>
+</div>
+
+<!-- Pheta -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="pheta" data-region="west" data-gender="mens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/pheta.png" alt="Pheta" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Pheta</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>West India</span>
+    <span>Men's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional Marathi turban worn by men, symbolizing honor, respect, and cultural pride during festivals and ceremonies.
+  </p>
+  <button 
+    onclick="document.getElementById('pheta-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Pheta -->
+<div id="pheta-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👑 Pheta – The Pride of Maharashtra 👑</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Overview:</strong><br>
+      The Pheta is a traditional turban worn by men in Maharashtra. It is a symbol of honor and is typically worn during religious functions, weddings, and cultural events.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Styles and Fabric:</strong><br>
+      • Available in various regional styles like Kolhapuri, Puneri, and Shahi Pheta.<br>
+      • Made from cotton or silk, often in bright colors with golden borders.<br>
+      • Tied in intricate layers, representing dignity and valor.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Significance:</strong><br>
+      The Pheta reflects Maharashtrian pride and respect. It is traditionally gifted to guests and dignitaries as a mark of esteem and continues to be worn as a proud heritage symbol.
+    </p>
+  </div>
+</div>
+
+<!-- Nauvari Saree -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="nauvari-saree" data-region="west" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/nauvari.png" alt="Nauvari Saree" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Nauvari Saree</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>West India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    A traditional Maharashtrian saree draped in a trouser-like style for ease and elegance, worn during cultural rituals and festive occasions.
+  </p>
+  <button 
+    onclick="document.getElementById('nauvari-saree-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Nauvari Saree -->
+<div id="nauvari-saree-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👗 Nauvari Saree – The Warrior Drape of Maharashtra 👗</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Overview:</strong><br>
+      The Nauvari Saree, meaning "nine-yard saree," is a signature attire of Maharashtrian women. Its distinctive drape allows freedom of movement, making it historically ideal for both daily chores and wartime roles.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Style and Material:</strong><br>
+      • Draped like a dhoti with the pallu over the shoulder.<br>
+      • Traditionally made of cotton or silk.<br>
+      • Often paired with a short-sleeved blouse and a nose ring (nath).
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Value:</strong><br>
+      Worn during Lavani performances, Ganesh Chaturthi, and weddings, the Nauvari symbolizes strength, grace, and cultural pride. It is both functional and elegant—rooted deeply in Maratha history.
+    </p>
+  </div>
+</div>
+
+<!-- Kunbi Saree -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="kunbi-saree" data-region="west" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/kunbi-saree.png" alt="Kunbi Saree" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Kunbi Saree</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>West India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional Goan tribal saree known for its bright red hues and chequered patterns, draped for practicality by Kunbi women.
+  </p>
+  <button 
+    onclick="document.getElementById('kunbi-saree-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Kunbi Saree -->
+<div id="kunbi-saree-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👒 Kunbi Saree – The Rustic Charm of Goa 👒</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin:</strong><br>
+      Worn by the Kunbi tribe of Goa, the Kunbi saree represents a deeply rooted rural lifestyle and agricultural heritage. It is also associated with the Nav-Vari style in some coastal areas.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design Highlights:</strong><br>
+      • Typically red or maroon with white chequered patterns.<br>
+      • Made from coarse cotton, designed for comfort in tropical climates.<br>
+      • Draped without a blouse or petticoat in traditional fashion.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Essence:</strong><br>
+      More than attire, the Kunbi saree is a mark of identity for Goan tribal women. It reflects simplicity, functionality, and pride in their agrarian roots. Modern adaptations preserve the pattern while blending with contemporary styles.
+    </p>
+  </div>
+</div>
+
+<!-- Lugda -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="lugda" data-region="central" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/lugda.jpeg" alt="Lugda" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Lugda</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>Central India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional Maharashtrian or tribal drape, often worn with a short blouse, designed for daily work and cultural events.
+  </p>
+  <button 
+    onclick="document.getElementById('lugda-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Lugda -->
+<div id="lugda-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🧣 Lugda – The Everyday Grace of Rural Women 🧣</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and Use:</strong><br>
+      The Lugda is a staple garment worn by rural and tribal women in parts of Maharashtra and Central India. It is a versatile piece of clothing suited for both daily chores and festive gatherings.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design Features:</strong><br>
+      • Usually made from cotton or handwoven fabric.<br>
+      • Comes in bright colors with simple prints or borders.<br>
+      • Draped in a practical style for ease of movement, often without pleats.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Importance:</strong><br>
+      Lugda represents simplicity, strength, and self-reliance. It continues to be an iconic dress of identity in many Adivasi and rural communities, symbolizing connection with the land and tradition.
+    </p>
+  </div>
+</div>
+
+<!-- Veshti -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="veshti" data-region="south" data-gender="mens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/veshti.jpeg" alt="Veshti" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Veshti</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>South India</span>
+    <span>Men's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional South Indian men's attire, typically a white or off-white dhoti, worn during ceremonies and daily life.
+  </p>
+  <button 
+    onclick="document.getElementById('veshti-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Veshti -->
+<div id="veshti-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👘 Veshti – South India's Traditional Dhoti 👘</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and Cultural Role:</strong><br>
+      The Veshti is an age-old traditional garment predominantly worn by men in Tamil Nadu and across South India. It is symbolic of purity and is often worn during festivals, weddings, and rituals.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Fabric:</strong><br>
+      • Made of fine cotton or silk for ceremonial use.<br>
+      • Usually plain white or cream with a colored or golden zari border.<br>
+      • Draped around the waist and can be worn in a single or double fold style.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Significance:</strong><br>
+      Veshti is more than just attire—it's a representation of grace, simplicity, and cultural pride. It continues to be an essential garment in traditional and religious contexts across South India.
+    </p>
+  </div>
+</div>
+
+<!-- Angavastram -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="angavastram" data-region="south" data-gender="mens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/angvastram.png" alt="Angavastram" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Angavastram</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>South India</span>
+    <span>Men's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    A traditional piece of cloth draped over the shoulder, often worn during religious and ceremonial occasions.
+  </p>
+  <button 
+    onclick="document.getElementById('angavastram-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Angavastram -->
+<div id="angavastram-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🧣 Angavastram – The South Indian Shawl 🧣</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Angavastram is a traditional cloth draped over the shoulder and worn by men, especially in South India. It is often worn during festivals, weddings, and religious ceremonies.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • Typically made from cotton or silk.<br>
+      • Worn across the shoulder or around the neck.<br>
+      • It may be plain or decorated with borders, embroidery, or zari work, depending on the occasion.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Angavastram is more than just a garment; it is a symbol of respect and honor. It represents purity and grace and is an integral part of many religious and cultural functions in South India.
+    </p>
+  </div>
+</div>
+
+<!-- Pavadai-Davani -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="pavadai-davani" data-region="south" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/Pavadai-Davani.jpeg" alt="Pavadai-Davani" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Pavadai-Davani</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>South India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    A traditional South Indian outfit for girls, consisting of a long skirt (pavadai) and a matching blouse (davani).
+  </p>
+  <button 
+    onclick="document.getElementById('pavadai-davani-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Pavadai-Davani -->
+<div id="pavadai-davani-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👗 Pavadai-Davani – The Traditional South Indian Girl's Attire 👗</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Pavadai-Davani is a traditional outfit worn by young girls, predominantly in Tamil Nadu and other parts of South India. It is a cherished garment worn during festivals, temple visits, and other cultural celebrations.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The pavadai is a long, pleated skirt, often made from silk or cotton.<br>
+      • The davani is a matching blouse, sometimes with a draped shawl or dupatta.<br>
+      • Bright, vibrant colors and intricate borders are common, especially for festive occasions.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Pavadai-Davani ensemble is an essential part of a young girl's wardrobe in South India. It represents cultural traditions and is a symbol of femininity and grace. It is especially worn during auspicious events like weddings, festivals, and family gatherings.
+    </p>
+  </div>
+</div>
+
+<!-- Lungi -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="lungi" data-region="south" data-gender="mens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/lungi.png" alt="Lungi" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Lungi</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>South India</span>
+    <span>Men's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    A traditional garment worn by men in South India, a simple cloth tied around the waist, often worn for comfort in hot weather.
+  </p>
+  <button 
+    onclick="document.getElementById('lungi-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Lungi -->
+<div id="lungi-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👖 Lungi – The Traditional South Indian Garment 👖</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Lungi is a traditional garment worn by men in South India, especially in Tamil Nadu, Kerala, and Andhra Pradesh. It has been an essential part of daily wear for centuries, offering comfort and breathability in the tropical climate.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The Lungi is a simple piece of cloth, typically cotton or linen.<br>
+      • It is tied around the waist, often secured with a knot or fold.<br>
+      • The garment is usually plain or patterned and is worn at home, for casual outings, or during festivals.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Lungi is deeply rooted in the culture of South India. It represents the region’s informal, comfortable lifestyle, especially in the hot and humid climate. It is worn by men of all ages, particularly in rural areas, and continues to be a symbol of cultural heritage and pride.
+    </p>
+  </div>
+</div>
+
+<!-- Ilkal Saree -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="ilkal-saree" data-region="south" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/Ilkal Saree.jpeg" alt="Ilkal Saree" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Ilkal Saree</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>South India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    A traditional saree from the town of Ilkal in Karnataka, known for its unique weaving techniques and vibrant colors.
+  </p>
+  <button 
+    onclick="document.getElementById('ilkal-saree-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Ilkal Saree -->
+<div id="ilkal-saree-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👗 Ilkal Saree – A Traditional Karnataka Weave 👗</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Ilkal saree is a traditional saree originating from the town of Ilkal in Karnataka, South India. Known for its unique technique of weaving, this saree is a part of the rich cultural heritage of the region, often worn on festive occasions.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • Ilkal sarees are known for their distinctive body weave and unique pallu (the end piece of the saree).<br>
+      • The saree typically features bold geometric patterns and vibrant colors.<br>
+      • The border is often woven with cotton and silk yarns, giving it a striking appearance.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Ilkal saree is a symbol of Karnataka’s traditional weaving craftsmanship. It represents the heritage of the region and is an important part of the local culture. The saree is often worn by women during religious ceremonies, weddings, and cultural festivals.
+    </p>
+  </div>
+</div>
+
+<!-- Panche -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="panche" data-region="south" data-gender="mens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/Panche.jpeg" alt="Panche" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Panche</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>South India</span>
+    <span>Men's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    A traditional men’s garment worn in South India, similar to a dhoti but simpler, often worn for formal and festive occasions.
+  </p>
+  <button 
+    onclick="document.getElementById('panche-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Panche -->
+<div id="panche-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👕 Panche – Traditional South Indian Men’s Garment 👕</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Panche, a simple garment worn by men in South India, is part of traditional attire in states like Karnataka and Andhra Pradesh. It is a variant of the dhoti, typically worn for religious and cultural occasions.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The Panche is typically made from cotton and comes in a variety of colors.<br>
+      • It is worn in a simple, wrapped style, without the pleating seen in other traditional garments like the dhoti.<br>
+      • The design is straightforward, making it comfortable and easy to wear, often paired with a shirt or kurta.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Panche is a symbol of simplicity and elegance in South Indian culture. It is worn by men during various occasions such as weddings, temple visits, and festivals. The garment carries deep cultural significance and is an important part of the region's traditional wear.
+    </p>
+  </div>
+</div>
+
+<!-- Langa Voni -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="langa-voni" data-region="south" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/Langa Voni.png" alt="Langa Voni" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Langa Voni</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>South India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    A traditional South Indian outfit consisting of a long skirt (Langa) paired with a blouse and a dupatta (Voni).
+  </p>
+  <button 
+    onclick="document.getElementById('langa-voni-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Langa Voni -->
+<div id="langa-voni-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👗 Langa Voni – Traditional South Indian Attire for Women 👗</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Langa Voni is a traditional South Indian attire, particularly worn by women in Andhra Pradesh and Telangana. It is a vibrant and festive garment, often worn during celebrations, weddings, and cultural events.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The Langa is a long skirt, often made of silk or cotton.<br>
+      • It is paired with a blouse (choli) and a long dupatta (Voni) that is draped over the shoulders.<br>
+      • The outfit is known for its elaborate embroidery, beads, and mirror work, reflecting the rich culture of South India.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Langa Voni is considered an iconic dress in South Indian culture. It is worn by young girls and women during various festivities, especially during the traditional dance performances like Kuchipudi. The colorful design and detailed work represent the lively and vibrant culture of the region.
+    </p>
+  </div>
+</div>
+
+<!-- Garad Saree -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="garad-saree" data-region="east" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/Garad Saree.jpeg" alt="Garad Saree" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Garad Saree</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>East India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional Bengali saree known for its simple white or off-white color, often worn during festive and religious events.
+  </p>
+  <button 
+    onclick="document.getElementById('garad-saree-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Garad Saree -->
+<div id="garad-saree-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🧕 Garad Saree – Traditional Bengali Elegance 🧕</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Garad Saree is a classic Bengali saree, traditionally worn by women during religious ceremonies, weddings, and other important events. Its minimalist and sophisticated design has made it a staple of Bengali culture.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The Garad Saree is traditionally made of cotton or silk.<br>
+      • It features a white or off-white base, often with red borders, and is characterized by its simplicity.<br>
+      • This saree can be embellished with small motifs or delicate borders, maintaining its elegant and understated style.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Garad Saree represents purity and simplicity, and is typically worn by Bengali women during major life events. It holds a significant place in Bengali heritage, symbolizing a connection to tradition, faith, and cultural identity.
+    </p>
+  </div>
+</div>
+
+<!-- Gamani -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="gamani" data-region="west" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/gamani.png" alt="Gamani" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Gamani</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>West India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional attire worn by women in Gujarat, consisting of a long, flowing garment often worn during weddings and festivals.
+  </p>
+  <button 
+    onclick="document.getElementById('gamani-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Gamani -->
+<div id="gamani-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🧕 Gamani – The Traditional Gujarati Garment 🧕</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Gamani is a traditional garment worn by women in Gujarat, primarily during weddings and festivals. The garment has been an integral part of the culture for generations and symbolizes festivity and celebration.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The Gamani is typically made of fine cotton, silk, or brocade fabrics.<br>
+      • It features a long, flowing silhouette with intricate embroidery or mirror work.<br>
+      • It is often paired with a dupatta or shawl, completing the ensemble with vibrant colors and rich textures.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Gamani is not just a piece of clothing but a symbol of cultural heritage. It is worn with pride during important life events, especially weddings, and reflects the craftsmanship and traditions of Gujarati artisans.
+    </p>
+  </div>
+</div>
+
+<!-- Gamosa -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="gamosa" data-region="northeast" data-gender="unisex">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/gamos.jpeg" alt="Gamosa" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Gamosa</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>Northeast India</span>
+    <span>Unisex</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional Assamese cloth, worn as a symbol of respect and used in religious ceremonies and rituals.
+  </p>
+  <button 
+    onclick="document.getElementById('gamosa-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Gamosa -->
+<div id="gamosa-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🧕 Gamosa – The Symbol of Respect in Assam 🧕</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Gamosa is a traditional Assamese garment, typically given as a gift during important ceremonies and as a mark of respect. It is often seen during religious and cultural events in Assam.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The Gamosa is a rectangular piece of cloth, usually white, with red borders and traditional motifs.<br>
+      • It is worn around the neck or draped over the body during cultural rituals.<br>
+      • The cloth is traditionally made of cotton, though variations with silk threads are also popular.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Gamosa holds great significance in Assamese culture. It is considered a symbol of respect and is used in various ceremonies, including weddings, festivals, and rituals. It is also often presented to guests as a gesture of hospitality.
+    </p>
+  </div>
+</div>
+
+<!-- Mekhela Chador -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="mekhela-chador" data-region="northeast" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/mekhela-chador.webp" alt="Mekhela Chador" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Mekhela Chador</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>Northeast India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional Assamese attire consisting of a cylindrical lower garment (mekhela) and upper wrap (chador).
+  </p>
+  <button 
+    onclick="document.getElementById('mekhela-chador-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Mekhela Chador -->
+<div id="mekhela-chador-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👗 Mekhela Chador – Traditional Assamese Attire 👗</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Mekhela Chador is a traditional dress of Assam, primarily worn by Assamese women. The attire consists of two pieces: a lower garment called 'mekhela' and a matching upper drape called 'chador'. It is an essential part of the cultural heritage of Assam.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The Mekhela is a cylindrical wrap worn around the waist, while the Chador is draped over the shoulders.<br>
+      • The fabric is usually made of silk or cotton, and the design features rich motifs and vibrant colors.<br>
+      • Often embellished with gold or silver borders, the attire is worn during weddings, festivals, and other important cultural occasions.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Mekhela Chador represents the cultural identity of Assamese women. It is worn during major events like festivals, weddings, and religious ceremonies. The attire is a symbol of tradition, femininity, and pride in Assamese culture.
+    </p>
+  </div>
+</div>
+
+<!-- Warrior Dress with Feathers and Beads -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="warrior-dress" data-region="tribal" data-gender="unisex">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/Warrior Dress with Feathers and Beads.jpeg" alt="Warrior Dress with Feathers and Beads" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Warrior Dress with Feathers and Beads</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>Tribal Regions</span>
+    <span>Unisex Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional warrior attire adorned with feathers, beads, and leather, symbolizing strength and heritage.
+  </p>
+  <button 
+    onclick="document.getElementById('warrior-dress-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Warrior Dress with Feathers and Beads -->
+<div id="warrior-dress-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🦅 Warrior Dress with Feathers and Beads 🦅</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Warrior Dress with Feathers and Beads is a traditional attire worn by indigenous tribal warriors across various regions. It symbolizes strength, bravery, and connection to nature, often worn during ceremonies, rituals, and battle preparations.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The dress is made from leather, cloth, or animal hide, often decorated with intricate beadwork.<br>
+      • Feathers are attached to the dress, symbolizing power and a connection to the animal spirits.<br>
+      • The attire is typically unisex, worn by both men and women in different tribal cultures.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      This warrior attire is a symbol of the wearer's strength, cultural pride, and connection to their tribal heritage. Feathers represent the warrior's bond with birds and spirits, while beads are often symbols of achievements, victories, and honor.
+    </p>
+  </div>
+</div>
+
+<!-- Alungstu -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="alungstu" data-region="tribal" data-gender="unisex">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/anglustu.jpeg" alt="Alungstu" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Alungstu</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>Tribal Regions</span>
+    <span>Unisex Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional attire worn by certain indigenous tribes, often made of woven fabrics and adorned with unique tribal patterns.
+  </p>
+  <button 
+    onclick="document.getElementById('alungstu-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Alungstu -->
+<div id="alungstu-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🌿 Alungstu – Tribal Attire 🌿</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      Alungstu is a traditional garment worn by indigenous tribes of various regions. This attire is deeply tied to the cultural identity and history of the people, often passed down through generations.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • Typically crafted from woven fabrics, often with hand-dyed patterns.<br>
+      • The design varies greatly depending on the tribe, featuring intricate geometric shapes or natural motifs.<br>
+      • It is designed to be practical yet stylish, suited for everyday tribal life.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Alungstu is more than just clothing; it represents the cultural pride and traditions of the wearers. Adorned with tribal patterns and symbols, it connects the wearer to their roots, marking their belonging to a rich cultural heritage.
+    </p>
+  </div>
+</div>
+
+<!-- Jainsem -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="jainsem" data-region="northeast" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/genisem.jpeg" alt="Jainsem" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Jainsem</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>Northeast India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional attire worn by the Khasi women of Meghalaya, comprising a wrap-around dress and a top.
+  </p>
+  <button 
+    onclick="document.getElementById('jainsem-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Jainsem -->
+<div id="jainsem-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🌸 Jainsem – Traditional Khasi Attire 🌸</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Jainsem is a traditional garment worn by Khasi women from Meghalaya. This attire is an integral part of the Khasi culture and is typically worn during important cultural events and festivals.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The Jainsem consists of a wrap-around piece of cloth (the 'sem') that is worn around the lower body.<br>
+      • It is paired with a matching top, often in contrasting colors.<br>
+      • The fabric is usually handwoven, featuring colorful patterns that are symbolic of Khasi heritage.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Jainsem is more than just a piece of clothing; it represents the Khasi people's connection to their land, traditions, and community. It is worn with pride by women and is a key element of the Khasi identity.
+    </p>
+  </div>
+</div>
+
+<!-- Dhara -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="dhara" data-region="north" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/dhara.jpeg" alt="Dhara" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Dhara</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>North India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional attire of Rajasthani women, consisting of a long skirt (lehenga) paired with a dupatta.
+  </p>
+  <button 
+    onclick="document.getElementById('dhara-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Dhara -->
+<div id="dhara-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🌼 Dhara – Traditional Rajasthani Attire 🌼</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Dhara is a traditional Rajasthani outfit worn by women. It has been a part of Rajasthan's rich cultural heritage for centuries, often worn during festivals, weddings, and ceremonial occasions.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The Dhara consists of a long, flowing skirt known as the lehenga.<br>
+      • It is paired with a dupatta, which is draped elegantly over the head or shoulders.<br>
+      • The fabric used is often richly embroidered with intricate patterns, making it a staple for festive wear.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Dhara is a symbol of grace and elegance in Rajasthani culture. It represents the royal heritage of the region and is worn by women to showcase their connection to cultural traditions, especially during important events like weddings and festivals.
+    </p>
+  </div>
+</div>
+
+<!-- Phanek -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="phanek" data-region="northeast" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/phanek.jpeg" alt="Phanek" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Phanek</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>Northeast India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional attire worn by women in Manipur, consisting of a wrapped skirt made of handwoven fabric.
+  </p>
+  <button 
+    onclick="document.getElementById('phanek-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Phanek -->
+<div id="phanek-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🦋 Phanek – Traditional Manipur Attire 🦋</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Phanek is an iconic garment worn by women of Manipur, Northeast India. It has been a staple of traditional attire for centuries and plays a key role in the cultural identity of the Manipuri people.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The Phanek is a rectangular piece of handwoven fabric, wrapped around the waist and secured in place.<br>
+      • It is often paired with a shawl or blouse and is worn for both everyday wear and special occasions.<br>
+      • The fabric used is typically rich in texture, with colorful patterns or traditional motifs.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Phanek holds deep cultural significance, symbolizing the strength and elegance of Manipuri women. It is often worn during traditional festivals, dances, and ceremonies, reflecting the region’s cultural pride and heritage.
+    </p>
+  </div>
+</div>
+
+<!-- Innaphi -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="innaphi" data-region="northeast" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/Innaphi.jpeg" alt="Innaphi" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Innaphi</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>Northeast India</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional attire worn by Manipuri women, often paired with a Phanek, representing cultural heritage.
+  </p>
+  <button 
+    onclick="document.getElementById('innaphi-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Innaphi -->
+<div id="innaphi-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🌸 Innaphi – Traditional Manipuri Attire 🌸</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Innaphi is a traditional garment worn by women in Manipur, Northeast India. It is a part of their rich cultural heritage, often worn in combination with a Phanek for traditional events, festivals, and ceremonial occasions.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The Innaphi is a wrap-around garment that is worn over the Phanek.<br>
+      • It is typically made of fine, handwoven fabric and comes in various colors and patterns, each with cultural significance.<br>
+      • The garment is elegantly draped, and is often paired with jewelry to complete the traditional look.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Innaphi represents the grace and elegance of Manipuri women. It is deeply ingrained in the culture and is often worn during major events, festivals, and dances, where it highlights the traditional attire's beauty and significance in the region.
+    </p>
+  </div>
+</div>
+
+<!-- Puan -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="puan" data-region="mizoram" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/puan.jpeg" alt="Puan" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Puan</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>Mizoram</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional Mizo wrap-around garment, often worn during festivals, with intricate patterns and vibrant colors.
+  </p>
+  <button 
+    onclick="document.getElementById('puan-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Puan -->
+<div id="puan-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🌺 Puan – Traditional Mizo Attire 🌺</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Puan is a traditional garment worn by the women of Mizoram, Northeast India. It holds cultural significance and is worn during major festivals, dances, and other ceremonial occasions, symbolizing the pride and identity of the Mizo people.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The Puan is typically made from cotton or silk and is wrapped around the body.<br>
+      • It is usually accompanied by a blouse and a traditional shawl.<br>
+      • Known for its vibrant colors and intricate patterns, the Puan reflects the regional artistry and weaving traditions of Mizoram.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Puan is more than just an attire; it is a symbol of the Mizo people’s heritage. It is worn during important social and cultural events and is cherished as part of the identity of women in the region.
+    </p>
+  </div>
+</div>
+
+<!-- Rikutu Gamcha -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="rikutu-gamcha" data-region="assam" data-gender="unisex">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/Rikutu Gamcha.jpeg" alt="Rikutu Gamcha" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Rikutu Gamcha</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>Assam</span>
+    <span>Unisex Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional Assamese cloth, a handwoven scarf worn by both men and women, often during festivals and rituals.
+  </p>
+  <button 
+    onclick="document.getElementById('rikutu-gamcha-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Rikutu Gamcha -->
+<div id="rikutu-gamcha-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🧣 Rikutu Gamcha – Traditional Assamese Scarf 🧣</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Rikutu Gamcha is a traditional scarf worn by people in Assam, India. It is typically handwoven, and its use is closely tied to cultural and religious ceremonies in Assam.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The Rikutu Gamcha is a lightweight scarf made from cotton.<br>
+      • It is usually worn draped over the shoulders or head.<br>
+      • The design of the Gamcha features intricate patterns, and it is typically white with colored borders.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Rikutu Gamcha is a symbol of pride for the Assamese people. It is often worn during festivals, religious functions, and important cultural gatherings, showcasing the wearer’s connection to Assamese tradition.
+    </p>
+  </div>
+</div>
+
+<!-- Rignai and Risa -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="rignai-risa" data-region="assam" data-gender="womens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/Rignai and Risa.jpeg" alt="Rignai and Risa" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Rignai and Risa</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>Assam</span>
+    <span>Women's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional Assamese attire consisting of a long skirt (Rignai) and a blouse or shawl (Risa), often worn during festivals and cultural events.
+  </p>
+  <button 
+    onclick="document.getElementById('rignai-risa-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Rignai and Risa -->
+<div id="rignai-risa-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">👗 Rignai and Risa – Traditional Assamese Attire 👗</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and History:</strong><br>
+      The Rignai and Risa form the traditional attire worn by Assamese women, especially during festivals, cultural gatherings, and weddings. The combination is integral to the cultural identity of Assam.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Design and Style:</strong><br>
+      • The Rignai is a long, wrap-around skirt made from cotton or silk.<br>
+      • The Risa is a blouse or shawl that is draped over the shoulder or worn as a bodice.<br>
+      • The designs and colors vary depending on the occasion, often featuring intricate motifs and patterns.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      The Rignai and Risa ensemble represents the rich cultural heritage of Assam. It is worn during important festivals like Bihu and other traditional ceremonies, symbolizing the beauty, grace, and pride of Assamese women.
+    </p>
+  </div>
+</div>
+
+
+
+<!-- Chola -->
+<div class="bg-gray-800 p-4 rounded-lg border border-gray-700 hover:border-pink-500 transition-colors cursor-pointer outfit-item relative" data-outfit="chola" data-region="north" data-gender="mens">
+  <div class="overflow-hidden rounded-lg mb-3">
+    <img src="images/chola.jpeg" alt="Chola" class="w-full h-32 object-cover object-center outfit-image">
+  </div>
+  <h3 class="font-semibold mb-2 text-white">Chola</h3>
+  <div class="flex justify-between text-sm text-gray-400 mb-2">
+    <span>North India</span>
+    <span>Men's Wear</span>
+  </div>
+  <p class="text-xs text-gray-400 mb-3">
+    Traditional attire worn by Sikh men, especially warriors, consisting of a long tunic and often paired with a turban.
+  </p>
+  <button 
+    onclick="document.getElementById('chola-details').classList.remove('hidden')" 
+    class="outfit-details-btn w-full py-1 text-sm border border-pink-500 text-pink-500 rounded-lg hover:bg-pink-500 hover:text-white transition-colors"
+  >
+    View Details
+  </button>
+</div>
+
+<!-- Inline Modal for Chola -->
+<div id="chola-details" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="bg-gray-900 text-white max-w-lg w-full p-6 rounded-2xl shadow-lg relative">
+    <button onclick='this.parentElement.parentElement.classList.add("hidden")' class="absolute top-2 right-4 text-pink-500 hover:text-white text-lg font-bold">×</button>
+    <h2 class="text-2xl font-bold mb-4 text-pink-400">🛡️ Chola – The Warrior's Attire 🛡️</h2>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Origin and Legacy:</strong><br>
+      The Chola is a historic outfit closely associated with Sikh warriors and spiritual leaders. It traces its roots back to the times of the Sikh Gurus and symbolizes valor, dignity, and devotion.
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed mb-2">
+      <strong>Style and Structure:</strong><br>
+      • A long, flowing tunic-like garment, often extending below the knees.<br>
+      • It allows free movement, making it ideal for martial training and spiritual gatherings.<br>
+      • Typically paired with a turban, kamarbandh (waistband), and traditional Sikh weaponry (kirpan).
+    </p>
+    <p class="text-sm text-gray-300 leading-relaxed">
+      <strong>Cultural Significance:</strong><br>
+      Beyond its functional design, the Chola stands as a symbol of Sikh identity and resistance. It is worn during religious festivals, martial arts demonstrations, and by Nihang warriors as a mark of honor.
+    </p>
+  </div>
+</div>
+
+</section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 pt-16 pb-8">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          <div>
+            <div class="flex items-center space-x-2 mb-4">
+              <div class="text-pink-500 text-2xl">
+                <i class="fas fa-tshirt"></i>
+              </div>
+              <div class="text-xl font-bold">
+                Vastra<span class="text-pink-500">Verse</span>
+              </div>
+            </div>
+            <p class="text-gray-400 mb-4">
+              Celebrating the rich diversity of Indian traditional fashion and
+              culture through AI innovation.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="#"
+                class="text-gray-400 hover:text-pink-500 transition-colors"
+              >
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-pink-500 transition-colors"
+              >
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-pink-500 transition-colors"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-pink-500 transition-colors"
+              >
+                <i class="fab fa-youtube"></i>
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="index.html"
+                  class="text-gray-400 hover:text-pink-500 transition-colors"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="about.html"
+                  class="text-gray-400 hover:text-pink-500 transition-colors"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="chatbot.html"
+                  class="text-gray-400 hover:text-pink-500 transition-colors"
+                  >AI Chatbot</a
+                >
+              </li>
+              <li>
+                <a
+                  href="Festival Calendar.html"
+                  class="text-gray-400 hover:text-pink-500 transition-colors"
+                  >Festival Calendar</a
+                >
+              </li>
+              <li>
+                <a
+                  href="Traditional Outfits.html"
+                  class="text-gray-400 hover:text-pink-500 transition-colors"
+                  >Traditional Outfits</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-semibold mb-4">Resources</h4>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="blog.html"
+                  class="text-gray-400 hover:text-pink-500 transition-colors"
+                  >Blog</a
+                >
+              </li>
+              <li>
+                <a
+                  href="Cultural Guides.html"
+                  class="text-gray-400 hover:text-pink-500 transition-colors"
+                  >Cultural Guides</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-pink-500 transition-colors"
+                  >Outfit Dictionary</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-pink-500 transition-colors"
+                  >Regional Styles</a
+                >
+              </li>
+              <li>
+                <a
+                  href="FAQ.html"
+                  class="text-gray-400 hover:text-pink-500 transition-colors"
+                  >FAQ</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-semibold mb-4">
+              Subscribe to Our Newsletter
+            </h4>
+            <p class="text-gray-400 mb-4">
+              Stay updated with the latest festival guides and traditional
+              fashion trends
+            </p>
+            <form class="mb-4">
+              <div class="flex">
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  class="px-4 py-2 rounded-l-md bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-pink-500 w-full"
+                />
+                <button
+                  type="submit"
+                  class="px-4 py-2 bg-pink-500 text-white rounded-r-md hover:bg-pink-600 transition-colors"
+                >
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
+          <p>&copy; 2025 VastraVerse All rights reserved.</p>
         </div>
       </div>
-      
-      <div class="border-t border-gray-800 pt-8 text-center text-gray-500">
-        <p>&copy; 2025 VastraVerse All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+    </footer>
 
-  <script src="script.js"></script>
-  <script src="auth.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
