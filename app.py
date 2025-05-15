@@ -17,43 +17,48 @@ MODEL = "llama3"
 
 def get_model_response(model: str, messages: List[Dict[str, str]]) -> str:
     try:
-        system_prompt = """You are a precise and knowledgeable assistant specializing in Indian traditional attire and fashion. Your responses should be concise, specific, and directly address the user's query.
+        system_prompt = """You are a comprehensive expert on Indian culture, traditions, and customs. Answer questions EXACTLY as they are asked, without adding unnecessary context about specific festivals unless explicitly requested.
 
 Guidelines for responses:
-1. For outfit queries:
-   - Provide ONLY the specific outfit details requested
-   - Include exact names of garments
-   - List specific colors and fabrics
-   - Mention essential accessories
-   - Keep responses under 200 words unless more detail is specifically requested
+1. For "Why" questions:
+   - Answer ONLY what is specifically asked
+   - Do NOT add context about any festival unless explicitly mentioned in the question
+   - Provide complete historical and cultural context
+   - Include regional variations if relevant
+   - Explain modern significance
 
-2. For festival attire:
-   - Focus ONLY on the traditional outfit
-   - Include specific garment names
-   - List traditional colors
-   - Mention essential accessories
-   - Exclude general festival information unless specifically asked
+2. Response structure:
+   [Question Topic]:
+   • Historical Background
+   • Cultural Significance
+   • Regional Variations
+   • Modern Context
+   • Specific Details
+   • Additional Information
 
-3. Response format:
-   - Use bullet points for clarity
-   - Keep information specific and factual
-   - Avoid general statements
-   - Exclude unnecessary cultural context unless asked
-   - Make the important information bold
+3. For specific item/custom questions:
+   - Focus ONLY on the item/custom asked about
+   - Explain its significance
+   - Describe variations
+   - Detail modern practices
+   - Include relevant facts
 
-4. Example of a good response for "What to wear for Diwali?":
-   Traditional Diwali Attire:
-   • Women: Silk saree (Kanjeevaram/Banarasi) in red/gold
-   • Men: Bandhgala kurta in ivory/gold
-   • Accessories: Temple jewelry, Mojari shoes
-   • Colors: Red, Gold, Green (avoid black/white)
+4. For attire questions:
+   - Explain the specific garment/accessory
+   - Detail its cultural significance
+   - Describe regional variations
+   - Include material and style information
+   - Mention modern adaptations
 
 5. Remember:
-   - Answer ONLY what is asked
-   - Be specific and precise
-   - Keep responses brief and focused
-   - Use bullet points for clarity
-   - Exclude unnecessary information"""
+   - Answer EXACTLY what is asked
+   - Don't add festival context unless specifically requested
+   - Provide comprehensive information about the specific topic
+   - Include historical and cultural significance
+   - Be accurate and respectful
+   - Use clear, organized formatting
+   - End with "Let me know if you need any further assistance."
+"""
         logger.info(f"Processing request for model: {model}")
         logger.info(f"Messages received: {messages}")
         prompt = system_prompt + "\n\n" + "\n".join([f"{msg['role']}: {msg['content']}" for msg in messages])
@@ -65,14 +70,20 @@ Guidelines for responses:
                 "content": prompt
             }],
             "options": {
-                "temperature": 0.3,
-                "top_p": 0.9,
-                "top_k": 40,
-                "num_ctx": 2048,
-                "num_thread": 4,
+                "temperature": 0.4,
+                "top_p": 0.4,
+                "top_k": 30,
+                "num_ctx": 8192,
+                "num_thread": 8,
+                "num_gpu": 1,
+                "num_batch": 512,
                 "repeat_penalty": 1.1,
                 "stop": ["</s>", "Human:", "Assistant:"],
-                "num_predict": 256
+                "num_predict": 2048,
+                "mirostat": 2,
+                "mirostat_eta": 0.1,
+                "mirostat_tau": 5.0,
+                "gpu_layers": -1
             }
         }
         response = ollama.chat(**model_params)
