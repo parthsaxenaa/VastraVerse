@@ -220,6 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
     // Function to add a bot message to the chat
     function addBotMessage(message) {
+      message = (typeof message === 'string') ? message : (message ? String(message) : '');
       const botMessageDiv = document.createElement('div');
       botMessageDiv.className = 'flex items-start mb-4';
       botMessageDiv.innerHTML = `
@@ -259,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function() {
           body: JSON.stringify({ messages })
         });
         const data = await response.json();
-        return data.response;
+        return data.reply;
       } catch (error) {
         return "Sorry, I couldn't connect to the server.";
       }
@@ -284,10 +285,10 @@ document.addEventListener('DOMContentLoaded', function() {
   
     // Handle suggested questions
     suggestedQuestions.forEach(button => {
-      button.addEventListener('click', function() {
-        const question = this.textContent;
-        messageInput.value = question;
-        chatForm.dispatchEvent(new Event('submit'));
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        messageInput.value = this.textContent;
+        chatForm.requestSubmit(); // Only submit the form, do not call addUserMessage here
       });
     });
   

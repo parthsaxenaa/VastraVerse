@@ -1,10 +1,12 @@
-from flask import Flask, request, jsonify, send_from_directory, send_file
+from flask import Flask, request, jsonify, send_from_directory, send_file, Response, stream_with_context
 from flask_cors import CORS
-import ollama
+import requests
 from typing import List, Dict
 import logging
 import os
 import re
+import json
+import time
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -14,6 +16,7 @@ app = Flask(__name__, static_url_path='', static_folder='.')
 CORS(app)
 
 MODEL = "llama3"
+LM_STUDIO_API_URL = "http://localhost:1234/v1/chat/completions"  # Default LM Studio API endpoint
 
 def get_model_response(model: str, messages: List[Dict[str, str]]) -> str:
     try:
@@ -61,33 +64,28 @@ Guidelines for responses:
 """
         logger.info(f"Processing request for model: {model}")
         logger.info(f"Messages received: {messages}")
-        prompt = system_prompt + "\n\n" + "\n".join([f"{msg['role']}: {msg['content']}" for msg in messages])
-        logger.info(f"Sending prompt to model: {prompt}")
-        model_params = {
+        
+        # Prepare the messages for LM Studio
+        formatted_messages = [
+            {"role": "system", "content": system_prompt}
+        ]
+        formatted_messages.extend(messages)
+        
+        # Prepare the request payload
+        payload = {
             "model": model,
-            "messages": [{
-                "role": "user",
-                "content": prompt
-            }],
-            "options": {
-                "temperature": 0.4,
-                "top_p": 0.4,
-                "top_k": 30,
-                "num_ctx": 8192,
-                "num_thread": 8,
-                "num_gpu": 1,
-                "num_batch": 512,
-                "repeat_penalty": 1.1,
-                "stop": ["</s>", "Human:", "Assistant:"],
-                "num_predict": 2048,
-                "mirostat": 2,
-                "mirostat_eta": 0.1,
-                "mirostat_tau": 5.0,
-                "gpu_layers": -1
-            }
+            "messages": formatted_messages,
+            "temperature": 0.4,
+            "top_p": 0.4,
+            "max_tokens": 2048,
+            "stop": ["</s>", "Human:", "Assistant:"]
         }
-        response = ollama.chat(**model_params)
-        bot_reply = response['message']['content']
+        
+        logger.info(f"Sending request to LM Studio API")
+        response = requests.post(LM_STUDIO_API_URL, json=payload)
+        response.raise_for_status()
+        
+        bot_reply = response.json()['choices'][0]['message']['content']
         # Remove any note or disclaimer at the end of the response
         bot_reply = re.sub(r"\n*Note:.*", "", bot_reply, flags=re.IGNORECASE|re.DOTALL)
         # Append a single line for further assistance
@@ -121,8 +119,12 @@ def serve_file(filename):
 def chat():
     data = request.json
     messages = data.get('messages', [])
-    response = get_model_response(MODEL, messages)
-    return jsonify({"response": response})
+    try:
+        response = get_model_response(MODEL, messages)
+        return jsonify({'reply': response})
+    except Exception as e:
+        logger.error(f"Error in chat: {str(e)}")
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True) 
