@@ -110,7 +110,7 @@
           </div>
           
           <!-- Chat Messages -->
-          <div id="chatMessages" class="p-4 h-96 overflow-y-auto space-y-4">
+          <div id="chatMessages" class="p-4 h-[500px] overflow-y-auto space-y-4">
             <!-- Bot Message -->
             <div class="flex items-start">
               <div class="w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 flex items-center justify-center shrink-0">
@@ -233,7 +233,7 @@
         <p class="text-gray-400">Explore traditions by region - select a state to learn about its unique cultural heritage</p>
       </div>
       <div class="p-4 flex flex-col md:flex-row">
-        <div class="w-full md:w-1/2 h-96 bg-gray-700 rounded-lg flex items-center justify-center mb-4 md:mb-0 md:mr-4" id="india-map">
+        <div class="w-full md:w-1/2 h-96 bg-gray-700 rounded-lg flex items-center justify-center mb-4 md:mb-0 md:mr-4" id="india-map-container">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12000000!2d78.9629!3d22.5937!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjLCsDM1JzM3LjMiTiA3OMKwNTcnNDYuNCJF!5e0!3m2!1sen!2sin!4v1680000000000!5m2!1sen!2sin"
             width="100%"
@@ -586,107 +586,5 @@
     // Add more markers for other states as needed
   });
   </script>
-  <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const chatForm = document.getElementById('chatForm');
-    const messageInput = document.getElementById('messageInput');
-    const chatMessages = document.getElementById('chatMessages');
-    const typingIndicator = document.getElementById('typingIndicator');
-
-    // Function to add a message to the chat
-    function addMessage(content, isUser = false) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'flex items-start';
-        
-        const iconDiv = document.createElement('div');
-        iconDiv.className = isUser ? 
-            'w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center shrink-0' :
-            'w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 flex items-center justify-center shrink-0';
-        
-        const icon = document.createElement('i');
-        icon.className = isUser ? 'fas fa-user text-white text-xs' : 'fas fa-robot text-white text-xs';
-        iconDiv.appendChild(icon);
-        
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'ml-3 bg-gray-700 p-3 rounded-lg ' + (isUser ? 'rounded-tr-none' : 'rounded-tl-none') + ' max-w-md';
-        contentDiv.innerHTML = `<p>${content}</p>`;
-        
-        messageDiv.appendChild(iconDiv);
-        messageDiv.appendChild(contentDiv);
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    // Function to handle full response
-    async function handleFullResponse(response) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'flex items-start';
-        const iconDiv = document.createElement('div');
-        iconDiv.className = 'w-8 h-8 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 flex items-center justify-center shrink-0';
-        const icon = document.createElement('i');
-        icon.className = 'fas fa-robot text-white text-xs';
-        iconDiv.appendChild(icon);
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'ml-3 bg-gray-700 p-3 rounded-lg rounded-tl-none max-w-md';
-        messageDiv.appendChild(iconDiv);
-        messageDiv.appendChild(contentDiv);
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        const data = await response.json();
-        contentDiv.innerHTML = `<p>${data.reply || data.error || 'No response'}</p>`;
-    }
-
-    // Handle form submission
-    chatForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const message = messageInput.value.trim();
-        if (!message) return;
-
-        // Add user message
-        addMessage(message, true);
-        messageInput.value = '';
-
-        // Show typing indicator
-        typingIndicator.classList.remove('hidden');
-
-        try {
-            const response = await fetch('/api/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    messages: [{
-                        role: 'user',
-                        content: message
-                    }]
-                })
-            });
-
-            // Hide typing indicator
-            typingIndicator.classList.add('hidden');
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            await handleFullResponse(response);
-        } catch (error) {
-            console.error('Error:', error);
-            addMessage('Sorry, there was an error processing your request. Please try again.');
-            typingIndicator.classList.add('hidden');
-        }
-    });
-
-    // Handle suggested questions
-    document.querySelectorAll('.suggested-question').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default button behavior
-            messageInput.value = this.textContent;
-            chatForm.requestSubmit(); // Trigger the form's submit event
-        });
-    });
-});
-</script>
 </body>
 </html>

@@ -246,41 +246,27 @@ document.addEventListener('DOMContentLoaded', function() {
       typingIndicator.classList.add('hidden');
     }
   
-    // Function to send message to backend
-    async function sendMessageToBackend(userMessage) {
-      try {
-        const messages = [
-          { role: "user", content: userMessage }
-        ];
-        const response = await fetch('/api/chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ messages })
-        });
-        const data = await response.json();
-        return data.reply;
-      } catch (error) {
-        return "Sorry, I couldn't connect to the server.";
-      }
-    }
-  
     // Handle form submission
     chatForm.addEventListener('submit', async function(e) {
       e.preventDefault();
       const message = messageInput.value.trim();
       if (message === '') return;
+      
       // Add user message to chat
       addUserMessage(message);
       messageInput.value = '';
+      
       // Show typing indicator
       showTypingIndicator();
-      // Get bot response from backend
-      const botResponse = await sendMessageToBackend(message);
-      hideTypingIndicator();
-      addBotMessage(botResponse);
-      // Optionally, add suggested follow-up questions here if needed
+      
+      // Get bot response using the local getResponse function
+      const botResponse = getResponse(message);
+      
+      // Simulate typing delay
+      setTimeout(() => {
+        hideTypingIndicator();
+        addBotMessage(botResponse);
+      }, 1000);
     });
   
     // Handle suggested questions

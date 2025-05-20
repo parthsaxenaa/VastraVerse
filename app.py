@@ -1,12 +1,14 @@
-from flask import Flask, request, jsonify, send_from_directory, send_file, Response, stream_with_context
+from flask import Flask, request, jsonify, send_from_directory, send_file
 from flask_cors import CORS
-import requests
+import google.generativeai as genai
 from typing import List, Dict
 import logging
 import os
 import re
-import json
-import time
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -15,8 +17,16 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__, static_url_path='', static_folder='.')
 CORS(app)
 
-MODEL = "llama3"
-LM_STUDIO_API_URL = "http://localhost:1234/v1/chat/completions"  # Default LM Studio API endpoint
+
+# LM Studio is running on http://127.0.0.1:1234
+# client = OpenAI(base_url="http://127.0.0.1:1234/v1", api_key="not-needed")
+
+
+# Ensure you have set the GEMINI_API_KEY environment variable
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
+
+MODEL = "gemini-1.5-flash-latest" 
 
 def get_model_response(model: str, messages: List[Dict[str, str]]) -> str:
     try:
@@ -65,30 +75,27 @@ Guidelines for responses:
         logger.info(f"Processing request for model: {model}")
         logger.info(f"Messages received: {messages}")
         
-        # Prepare the messages for LM Studio
-        formatted_messages = [
-            {"role": "system", "content": system_prompt}
-        ]
-        formatted_messages.extend(messages)
+       
+        prompt = system_prompt + "\n\n" + "\n".join([f"{msg['role']}: {msg['content']}" for msg in messages])
         
-        # Prepare the request payload
-        payload = {
-            "model": model,
-            "messages": formatted_messages,
-            "temperature": 0.4,
-            "top_p": 0.4,
-            "max_tokens": 2048,
-            "stop": ["</s>", "Human:", "Assistant:"]
-        }
+        model_instance = genai.GenerativeModel(model)
         
-        logger.info(f"Sending request to LM Studio API")
-        response = requests.post(LM_STUDIO_API_URL, json=payload)
-        response.raise_for_status()
         
-        bot_reply = response.json()['choices'][0]['message']['content']
-        # Remove any note or disclaimer at the end of the response
+        response = model_instance.generate_content(
+            prompt,
+            generation_config=genai.GenerationConfig(
+                temperature=0.4,
+                max_output_tokens=2048,
+                top_p=0.4,
+                
+            ),
+            
+        )
+
+        bot_reply = response.text
+        
         bot_reply = re.sub(r"\n*Note:.*", "", bot_reply, flags=re.IGNORECASE|re.DOTALL)
-        # Append a single line for further assistance
+        
         if bot_reply.strip() and not bot_reply.strip().endswith("Let me know if you need any further assistance."):
             bot_reply = bot_reply.strip() + "\n\nLet me know if you need any further assistance."
         return bot_reply
@@ -119,12 +126,8 @@ def serve_file(filename):
 def chat():
     data = request.json
     messages = data.get('messages', [])
-    try:
-        response = get_model_response(MODEL, messages)
-        return jsonify({'reply': response})
-    except Exception as e:
-        logger.error(f"Error in chat: {str(e)}")
-        return jsonify({'error': str(e)}), 500
+    response = get_model_response(MODEL, messages)
+    return jsonify({"response": response})
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000, debug=True) 
+    app.run(host='127.0.0.1', port=5000, debug=True)
