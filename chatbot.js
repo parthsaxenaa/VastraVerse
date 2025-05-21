@@ -220,6 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
     // Function to add a bot message to the chat
     function addBotMessage(message) {
+      message = (typeof message === 'string') ? message : (message ? String(message) : '');
       const botMessageDiv = document.createElement('div');
       botMessageDiv.className = 'flex items-start mb-4';
       botMessageDiv.innerHTML = `
@@ -227,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
           <i class="fas fa-robot text-white text-xs"></i>
         </div>
         <div class="ml-3 bg-gray-700 p-3 rounded-lg rounded-tl-none max-w-md">
-          <p>${message.replace(/\n/g, '<br>')}</p>
+          <p>${message.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>')}</p>
         </div>
       `;
       chatMessages.appendChild(botMessageDiv);
@@ -246,10 +247,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   
     // Handle form submission
-    chatForm.addEventListener('submit', function(e) {
+    chatForm.addEventListener('submit', async function(e) {
       e.preventDefault();
       const message = messageInput.value.trim();
-      
       if (message === '') return;
       
       // Add user message to chat
@@ -259,31 +259,22 @@ document.addEventListener('DOMContentLoaded', function() {
       // Show typing indicator
       showTypingIndicator();
       
-      // Simulate bot processing time
-      setTimeout(function() {
+      // Get bot response using the local getResponse function
+      const botResponse = getResponse(message);
+      
+      // Simulate typing delay
+      setTimeout(() => {
         hideTypingIndicator();
-        
-        // Get and add bot response
-        const response = getResponse(message);
-        addBotMessage(response);
-        
-        // Add suggested follow-up questions based on the context
-        if (message.toLowerCase().includes('saree')) {
-          addSuggestedQuestions(['How to drape a saree?', 'What saree to wear for a wedding?', 'Regional saree varieties']);
-        } else if (message.toLowerCase().includes('festival')) {
-          addSuggestedQuestions(['What to wear for Diwali?', 'Holi celebration attire', 'Navratri special outfits']);
-        } else if (response.includes('specific traditional outfit')) {
-          addSuggestedQuestions(['Tell me about lehengas', 'What is a dhoti?', 'Traditional Kerala outfits']);
-        }
-      }, 1000 + Math.random() * 1000); // Random delay between 1-2 seconds
+        addBotMessage(botResponse);
+      }, 1000);
     });
   
     // Handle suggested questions
     suggestedQuestions.forEach(button => {
-      button.addEventListener('click', function() {
-        const question = this.textContent;
-        messageInput.value = question;
-        chatForm.dispatchEvent(new Event('submit'));
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        messageInput.value = this.textContent;
+        chatForm.requestSubmit(); // Only submit the form, do not call addUserMessage here
       });
     });
   
