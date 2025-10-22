@@ -8,9 +8,9 @@ Welcome to *VastraVerse*, an interactive web application dedicated to exploring 
 
 Check out the demo of **VastraVerse** in action:
 
-[![Watch the video](https://img.youtube.com/vi/K3LUcsrhW78/maxresdefault.jpg)](https://youtu.be/K3LUcsrhW78)
+[![Watch the video](https://www.linkedin.com/posts/parthsaxenaa_vastraverse-traditionmeetstech-artificialintelligence-activity-7331646761540681731-WrWv?utm_source=share&utm_medium=member_desktop&rcm=ACoAADL-87IBHDcB6wpgm6OKEAZtNq7_KhDaBno)
 
-> Click the thumbnail or [watch on YouTube](https://youtu.be/K3LUcsrhW78)
+> Click the thumbnail or [watch on linkdin](https://www.linkedin.com/posts/parthsaxenaa_vastraverse-traditionmeetstech-artificialintelligence-activity-7331646761540681731-WrWv?utm_source=share&utm_medium=member_desktop&rcm=ACoAADL-87IBHDcB6wpgm6OKEAZtNq7_KhDaBno)
 
 ---
 
