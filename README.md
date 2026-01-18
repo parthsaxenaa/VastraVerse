@@ -3,15 +3,6 @@
 Welcome to *VastraVerse*, an interactive web application dedicated to exploring the rich tapestry of Indian culture, traditions, and fashion. Discover detailed information about traditional outfits, regional styles, festivals, and ceremonies, enhanced with cutting-edge AI features like a knowledgeable chatbot and a virtual clothing try-on experience.
 
 ---
-
-### 📺 Demo Video
-
-Check out the demo of **VastraVerse** in action:
-
-[![Watch the video](https://www.linkedin.com/posts/parthsaxenaa_vastraverse-traditionmeetstech-artificialintelligence-activity-7331646761540681731-WrWv?utm_source=share&utm_medium=member_desktop&rcm=ACoAADL-87IBHDcB6wpgm6OKEAZtNq7_KhDaBno)
-
-> Click the thumbnail or [watch on linkdin](https://www.linkedin.com/posts/parthsaxenaa_vastraverse-traditionmeetstech-artificialintelligence-activity-7331646761540681731-WrWv?utm_source=share&utm_medium=member_desktop&rcm=ACoAADL-87IBHDcB6wpgm6OKEAZtNq7_KhDaBno)
-
 ---
 
 ## 🌟 Features
@@ -54,63 +45,6 @@ Enjoy a user-friendly interface with:
 - *Database:* Browser localStorage (for user data, chat history - see Security Warning)  
 - *Python Libraries:*  
   Flask, google-generativeai, Flask-Cors, python-dotenv, Pillow, requests, PyTorch, diffusers, transformers, etc. (see requirements.txt)
-
----
-
-## ⚙ Setup and Installation
-
-Follow these steps to set up and run VastraVerse locally.
-
-### 1. Prerequisites
-
-- Git  
-- Python 3.9 or higher  
-- pip (Python package installer)  
-- A running instance of *ComfyUI* (for the Virtual Try-On feature)
-
-### 2. Clone the Repository
-
-```bash
-git clone https://github.com/sachiin0209/-sachiin0209-VastraVerse_main.git
-cd -sachiin0209-VastraVerse_main
-code ./
-```
-
-### 3. Set up Python Environment
-
-It is recommended to use a virtual environment:
-
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows use venv\Scripts\activate
-pip install -r requirements.txt
-```
-Note: The requirements.txt includes PyTorch with CUDA 11.8 (+cu118). If you don't have an NVIDIA GPU or have a different CUDA version, adjust the PyTorch install as per the PyTorch official guide.
-
-### 4. Configure Environment Variables
-Create a .env file in the root directory with:
-
-```
-# Your Google Gemini API Key (https://aistudio.google.com/app/apikey)
-GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
-
-# URL of your running ComfyUI instance (default: http://localhost:8188)
-COMFYUI_SERVER="http://localhost:8188"
-```
-Replace "YOUR_GEMINI_API_KEY" with your actual API key.
-
-### 5. Set up ComfyUI
-- Follow instructions on the ComfyUI GitHub repo to install and run it.
-- Download and place these models in ComfyUI's model folders:
-- Checkpoint: v1-5-pruned-emaonly.safetensors (Stable Diffusion v1.5)
-- IP-Adapter Model: ip-adapter_sd15.bin (usually under ComfyUI/models/ipadapter/)
-Launch the ComfyUI server (default http://localhost:8188).
-
-### 6. Run the Flask Application
-```bash
-python comfyserver.py
-```
-Open your browser at http://localhost:5000 (or http://127.0.0.1:5000).
 
 ## Usage
 - Browse Content: Explore traditional outfits, festivals, and culture from the navigation menu.
